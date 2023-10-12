@@ -1,0 +1,19 @@
+services:
+  backend:
+    build:
+      context: ./backend/
+    ports:
+      - "8080:8080" #port-localhost:port-backend
+    networks:
+      - my-site
+
+  frontend:
+    build:
+      context: ./frontend/
+    ports:
+      - "80:80" #default
+    networks:
+      - my-site
+
+networks:
+  my-site:
