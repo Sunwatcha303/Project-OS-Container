@@ -1,3 +1,5 @@
+-- DRAFT 1
+
 CREATE TABLE actor(
     id_actor INT PRIMARY KEY,
     actor_name VARCHAR(30)
