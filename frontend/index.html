@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>รีวิวหนัง</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <h1>hello world</h1>
-    <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, eaque maiores? Doloribus esse mollitia, aperiam architecto quam aspernatur temporibus alias ullam laudantium sequi ipsam modi facilis maiores sit similique aliquid?</h1>
+    <h1>รีวิวหนัง</h1>
+</div>
+<div id="average-rating">
+    คะแนนเฉลี่ย: <span id="average">กำลังโหลด...</span>
+</div>
+<!-- แก้ไขฟอร์มเพื่อเลือกคะแนนดาว -->
+<img src="https://s359.kapook.com/r/600/auto/pagebuilder/1339ea87-005e-413a-ae41-a33c47da2e89.jpg" alt="รูปภาพหนัง">
+<form id="review-form">
+    <div class="rating">
+        <span class="star" data-rating="1">&#9733;</span>
+        <span class="star" data-rating="2">&#9733;</span>
+        <span class="star" data-rating="3">&#9733;</span>
+        <span class="star" data-rating="4">&#9733;</span>
+        <span class="star" data-rating="5">&#9733;</span>
+        <input type="hidden" name="rating" id="rating" value="0" required>
+    </div>
+    <label for="user-name">ชื่อผู้รีวิว:</label>
+    <input type="text" id="user-name" name="user-name" required> <!-- ช่องใส่ชื่อ -->
+    <label for="user-review">รีวิว:</label>
+    <textarea id="user-review" name="user-review" required></textarea>
+    <button type="submitt">รีวิว</button>
+</form>
+<div id="movie-list">
+    <!-- แสดงรายการหนังและคะแนนดาวที่มีในฐานข้อมูล -->
+</div>
+    <script src="script.js"></script>
 </body>
 </html>
