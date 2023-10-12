@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Charm:wght@700&display=swap');
+body {
+    font-family: 'Charm', cursive; 
+    background-color: #0000001a;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    font-size: 36px;
+    margin: 20px;
+}
+
+#movie-list {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px #999;
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px #999;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+#movie-list h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+#movie-list p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* เพิ่มสไตล์ให้คะแนนดาว */
+.rating {
+    display: inline-block;
+}
+
+.star {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.star:hover,
+.star.active {
+    color: #ffcc00;
+}
+
+.review {
+    text-align: left;
+}
+
