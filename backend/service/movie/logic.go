@@ -1,1 +1,11 @@
 package movie
+
+type MovieLogic struct{}
+
+func (l *MovieLogic) InitMovieLogic() *MovieLogic {
+	return &MovieLogic{}
+}
+
+func (l *MovieLogic) AddMovieLogic() (err error) {
+	return nil
+}

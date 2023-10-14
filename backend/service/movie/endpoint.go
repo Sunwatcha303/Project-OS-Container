@@ -6,10 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Endpoint struct{}
+type Endpoint struct {
+	logic *MovieLogic
+}
 
 func NewEndpoint() *Endpoint {
-	return &Endpoint{}
+	logic := MovieLogic{}
+	return &Endpoint{
+		logic: logic.InitMovieLogic(),
+	}
 }
 
 func (e *Endpoint) Health(c *gin.Context) {
@@ -20,4 +25,8 @@ func (e *Endpoint) Health(c *gin.Context) {
 		Message:     nil,
 	}
 	c.JSON(http.StatusOK, response)
+}
+
+func (e *Endpoint) AddMovie(c *gin.Context) {
+	c.JSON(http.StatusCreated, nil)
 }

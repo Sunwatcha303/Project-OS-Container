@@ -5,6 +5,7 @@ import (
 
 	"github.com/Sunwatcha303/Project-OS-Container/middleware"
 	"github.com/Sunwatcha303/Project-OS-Container/service/central"
+	"github.com/Sunwatcha303/Project-OS-Container/service/movie"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -25,6 +26,7 @@ type Routes struct {
 
 func (r Routes) InitRouter() http.Handler {
 	centralEndpoint := central.NewEndpoint()
+	movieEndpoint := movie.NewEndpoint()
 
 	r.centralService = []route{
 		{
@@ -43,17 +45,17 @@ func (r Routes) InitRouter() http.Handler {
 			Description: "Get health status from server",
 			Method:      http.MethodGet,
 			Patten:      "/movie/",
-			Endpoint:    centralEndpoint.Health,
+			Endpoint:    movieEndpoint.Health,
 			Validation:  middleware.NoMiddlewareValitdation,
 		},
-		// {
-		// 	Name:        "POST: add movie",
-		// 	Description: "ADD moive in the server",
-		// 	Method:      http.MethodPost,
-		// 	Patten:      "/add",
-		// 	Endpoint:    nil,
-		// 	Validation:  middleware.NoMiddlewareValitdation,
-		// },
+		{
+			Name:        "POST: add movie",
+			Description: "Add movie into server",
+			Method:      http.MethodPost,
+			Patten:      "/movie/add",
+			Endpoint:    movieEndpoint.AddMovie,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
 	}
 
 	ro := gin.Default()
