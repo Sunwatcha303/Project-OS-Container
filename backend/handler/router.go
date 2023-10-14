@@ -20,6 +20,7 @@ type route struct {
 type Routes struct {
 	router         *gin.Engine
 	centralService []route
+	movieService   []route
 }
 
 func (r Routes) InitRouter() http.Handler {
@@ -36,6 +37,25 @@ func (r Routes) InitRouter() http.Handler {
 		},
 	}
 
+	r.movieService = []route{
+		{
+			Name:        "Get: health",
+			Description: "Get health status from server",
+			Method:      http.MethodGet,
+			Patten:      "/movie/",
+			Endpoint:    centralEndpoint.Health,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		// {
+		// 	Name:        "POST: add movie",
+		// 	Description: "ADD moive in the server",
+		// 	Method:      http.MethodPost,
+		// 	Patten:      "/add",
+		// 	Endpoint:    nil,
+		// 	Validation:  middleware.NoMiddlewareValitdation,
+		// },
+	}
+
 	ro := gin.Default()
 	ro.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"*"},
@@ -45,6 +65,9 @@ func (r Routes) InitRouter() http.Handler {
 
 	mainRoute := ro.Group("project-os-container")
 	for _, e := range r.centralService {
+		mainRoute.Handle(e.Method, e.Patten, e.Validation, e.Endpoint)
+	}
+	for _, e := range r.movieService {
 		mainRoute.Handle(e.Method, e.Patten, e.Validation, e.Endpoint)
 	}
 	return ro
