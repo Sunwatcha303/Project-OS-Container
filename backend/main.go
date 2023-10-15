@@ -18,7 +18,7 @@ func main() {
 	config.InitDatabaseConnection()
 	r := handler.Routes{}
 	handlerRoute := r.InitRouter()
-	AppSrv := &http.Server{Addr: ":8080", Handler: handlerRoute}
+	AppSrv := &http.Server{Addr: "0.0.0.0:8080", Handler: handlerRoute}
 	fmt.Println("[Main] Listening at port :8080")
 	go func() {
 		var err error = nil
