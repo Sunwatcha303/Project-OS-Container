@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.2 (Python 3.10.13 on darwin)" generated="20231015 23:42:18.380" rpa="false" schemaversion="3">
+<suite id="s1" name="Movie-Gethealth" source="/Users/pasitmalarat/Desktop/cs_kmitl/P2_term1/Project-OS-Container/TestService/movie-gethealth.robot">
+<test id="s1-t1" name="TC_BE_00001 success - get health from news service found" line="61">
+<kw name="When Call api for health">
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${headers}</var>
+<arg>Api_Key=${API_KEY}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231015 23:42:18.511" level="INFO">${headers} = {'Api_Key': '1234567890'}</msg>
+<status status="PASS" starttime="20231015 23:42:18.510" endtime="20231015 23:42:18.511"/>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<arg>get_health</arg>
+<arg>${BACKEND_HOST}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231015 23:42:18.511" level="INFO">Creating Session using : alias=get_health, url=http://localhost:8080, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231015 23:42:18.511" endtime="20231015 23:42:18.511"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>get_health</arg>
+<arg>${uri_movie}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231015 23:42:18.518" level="WARN">Retrying (RetryAdapter(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88b220&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:18.724" level="WARN">Retrying (RetryAdapter(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b8f01c0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.128" level="WARN">Retrying (RetryAdapter(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b8f0400&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.133" level="FAIL">ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /project-os-container/movie/ (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b8f0640&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
+<status status="FAIL" starttime="20231015 23:42:18.511" endtime="20231015 23:42:19.141"/>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<status status="NOT RUN" starttime="20231015 23:42:19.142" endtime="20231015 23:42:19.142"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" starttime="20231015 23:42:19.142" endtime="20231015 23:42:19.142"/>
+</kw>
+<status status="FAIL" starttime="20231015 23:42:18.510" endtime="20231015 23:42:19.142"/>
+</kw>
+<kw name="Then Verify response http status">
+<arg>200</arg>
+<status status="NOT RUN" starttime="20231015 23:42:19.143" endtime="20231015 23:42:19.143"/>
+</kw>
+<kw name="And Verify health response body">
+<arg>${success.expect}</arg>
+<status status="NOT RUN" starttime="20231015 23:42:19.143" endtime="20231015 23:42:19.143"/>
+</kw>
+<doc>to verify how api return health from news service</doc>
+<tag>ready</tag>
+<tag>regression</tag>
+<tag>success</tag>
+<status status="FAIL" starttime="20231015 23:42:18.510" endtime="20231015 23:42:19.143">ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /project-os-container/movie/ (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b8f0640&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</status>
+</test>
+<test id="s1-t2" name="TC_BE_00002 fail - get health from news service without api key" line="68">
+<kw name="When Call api for health without api key">
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${headers}</var>
+<arg>Api-Key=null</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231015 23:42:19.146" level="INFO">${headers} = {'Api-Key': 'null'}</msg>
+<status status="PASS" starttime="20231015 23:42:19.145" endtime="20231015 23:42:19.146"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>get_health</arg>
+<arg>${uri_movie}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231015 23:42:19.151" level="WARN">Retrying (RetryAdapter(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88ab00&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.358" level="WARN">Retrying (RetryAdapter(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88b760&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.767" level="WARN">Retrying (RetryAdapter(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88b340&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.769" level="FAIL">ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /project-os-container/movie/ (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88ad40&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
+<status status="FAIL" starttime="20231015 23:42:19.146" endtime="20231015 23:42:19.769"/>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<status status="NOT RUN" starttime="20231015 23:42:19.769" endtime="20231015 23:42:19.770"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" starttime="20231015 23:42:19.770" endtime="20231015 23:42:19.770"/>
+</kw>
+<status status="FAIL" starttime="20231015 23:42:19.145" endtime="20231015 23:42:19.770"/>
+</kw>
+<kw name="Then Verify response http status">
+<arg>401</arg>
+<status status="NOT RUN" starttime="20231015 23:42:19.770" endtime="20231015 23:42:19.770"/>
+</kw>
+<kw name="And Verify error response body">
+<arg>${fail.missing_api_key}</arg>
+<status status="NOT RUN" starttime="20231015 23:42:19.770" endtime="20231015 23:42:19.771"/>
+</kw>
+<doc>to verify how api return health from news service without api key</doc>
+<tag>fail</tag>
+<tag>ready</tag>
+<tag>regression</tag>
+<status status="FAIL" starttime="20231015 23:42:19.144" endtime="20231015 23:42:19.771">ConnectionError: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /project-os-container/movie/ (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88ad40&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</status>
+</test>
+<status status="FAIL" starttime="20231015 23:42:18.381" endtime="20231015 23:42:19.771"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="2" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="1" skip="0">fail</stat>
+<stat pass="0" fail="2" skip="0">ready</stat>
+<stat pass="0" fail="2" skip="0">regression</stat>
+<stat pass="0" fail="1" skip="0">success</stat>
+</tag>
+<suite>
+<stat pass="0" fail="2" skip="0" id="s1" name="Movie-Gethealth">Movie-Gethealth</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20231015 23:42:18.509" level="ERROR">Error in file '/Users/pasitmalarat/Desktop/cs_kmitl/P2_term1/Project-OS-Container/TestService/movie-gethealth.robot' on line 15: Resource file '../../resources/imports.robot' does not exist.</msg>
+<msg timestamp="20231015 23:42:18.518" level="WARN">Retrying (RetryAdapter(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88b220&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:18.724" level="WARN">Retrying (RetryAdapter(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b8f01c0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.128" level="WARN">Retrying (RetryAdapter(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b8f0400&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.151" level="WARN">Retrying (RetryAdapter(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88ab00&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.358" level="WARN">Retrying (RetryAdapter(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88b760&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+<msg timestamp="20231015 23:42:19.767" level="WARN">Retrying (RetryAdapter(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10b88b340&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /project-os-container/movie/</msg>
+</errors>
+</robot>
