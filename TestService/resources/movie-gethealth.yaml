@@ -10,4 +10,4 @@
       code: 1001
       error: api_key_error
       thai_description: "ไม่มีสิทธ์ในการร้องขอ"
-      english_description: "Invalid credentials, please try again"
+      english_description: "Invalid credentials"

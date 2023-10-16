@@ -12,8 +12,6 @@ Library           JSONLibrary
 Library           OperatingSystem
 # Library           ../lib/common.py
 
-Resource     ../../resources/imports.robot
-
 *** Variable ***
 ${BACKEND_HOST}     http://localhost:8080
 ${API_KEY}          1234567890
