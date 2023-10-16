@@ -18,7 +18,7 @@ func InitDatabaseConnection() {
 	var ConnectionMasterDB string = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&",
 		"root",                 // database user
 		"1234567890",           // database password
-		"localhost",            // database host
+		"db",                   // database host
 		"3306",                 // database port
 		"project-os-container", // database name
 	)

@@ -1,19 +1,39 @@
 services:
+  #service
   backend:
     build:
-      context: ./backend/
+      context: ./backend/ #path Dockerfile for backend
     ports:
-      - "8080:8080" #port-localhost:port-backend
+      - "8080:8080" #map port
     networks:
-      - my-site
+      - my-site #local network in this service
+    depends_on:
+      - db #if db failed, backend will failed too
+    restart: always #restart container when failed
 
   frontend:
     build:
-      context: ./frontend/
+      context: ./frontend/ #path Dockerfile for frontend
     ports:
-      - "80:80" #default
+      - "80:80" #map port
     networks:
-      - my-site
+      - my-site #local network in this service
+
+  db:
+    image: mysql:latest #image mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234567890 #set password
+      MYSQL_DATABASE: project-os-container #create database when start
+    volumes:
+      - myDB:/var/lib/mysql #keep data into localhost
+    ports:
+      - "3307:3306"
+    networks:
+      - my-site #local network in this service
 
 networks:
   my-site:
+
+
+volumes:
+  myDB:
