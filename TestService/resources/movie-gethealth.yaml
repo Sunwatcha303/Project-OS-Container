@@ -1,0 +1,13 @@
+  success:
+    expect:
+      code: 200
+      status: up
+      description: null
+      message: null
+
+  fail:
+    missing_api_key:
+      code: 1001
+      error: api_key_error
+      thai_description: "ไม่มีสิทธ์ในการร้องขอ"
+      english_description: "Invalid credentials"

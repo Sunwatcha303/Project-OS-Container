@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.2 (Python 3.10.13 on darwin)" generated="20231016 14:30:25.629" rpa="false" schemaversion="3">
+<suite id="s1" name="Movie-Gethealth" source="/Users/pasitmalarat/Desktop/cs_kmitl/P2_term1/Project-OS-Container/TestService/movie-gethealth.robot">
+<test id="s1-t1" name="TC_BE_00001 success - get health from news service found" line="59">
+<kw name="When Call api for health">
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${headers}</var>
+<arg>Api_Key=${API_KEY}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231016 14:30:25.735" level="INFO">${headers} = {'Api_Key': '1234567890'}</msg>
+<status status="PASS" starttime="20231016 14:30:25.734" endtime="20231016 14:30:25.735"/>
+</kw>
+<kw name="Create Session" library="RequestsLibrary">
+<arg>get_health</arg>
+<arg>${BACKEND_HOST}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20231016 14:30:25.735" level="INFO">Creating Session using : alias=get_health, url=http://localhost:8080, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20231016 14:30:25.735" endtime="20231016 14:30:25.735"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>get_health</arg>
+<arg>${uri_movie}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231016 14:30:25.742" level="INFO">GET Request : url=http://localhost:8080/project-os-container/movie/ 
+ path_url=/project-os-container/movie/ 
+ headers={'User-Agent': 'python-requests/2.29.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Api_Key': '1234567890'} 
+ body=None 
+ </msg>
+<msg timestamp="20231016 14:30:25.742" level="INFO">GET Response : url=http://localhost:8080/project-os-container/movie/ 
+ status=200, reason=OK 
+ headers={'Content-Type': 'application/json; charset=utf-8', 'Date': 'Mon, 16 Oct 2023 07:30:25 GMT', 'Content-Length': '60'} 
+ body={"code":200,"status":"up","description":null,"message":null} 
+ </msg>
+<msg timestamp="20231016 14:30:25.742" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231016 14:30:25.735" endtime="20231016 14:30:25.742"/>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<msg timestamp="20231016 14:30:25.743" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20231016 14:30:25.743" endtime="20231016 14:30:25.743"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231016 14:30:25.743" level="INFO">{"code":200,"status":"up","description":null,"message":null}</msg>
+<status status="PASS" starttime="20231016 14:30:25.743" endtime="20231016 14:30:25.743"/>
+</kw>
+<status status="PASS" starttime="20231016 14:30:25.734" endtime="20231016 14:30:25.743"/>
+</kw>
+<kw name="Then Verify response http status">
+<arg>200</arg>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expect}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<msg timestamp="20231016 14:30:25.744" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231016 14:30:25.744" endtime="20231016 14:30:25.744"/>
+</kw>
+<status status="PASS" starttime="20231016 14:30:25.744" endtime="20231016 14:30:25.744"/>
+</kw>
+<kw name="And Verify health response body">
+<arg>${success.expect}</arg>
+<kw name="Set Variable" library="BuiltIn">
+<var>&amp;{json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231016 14:30:25.745" level="INFO">&amp;{json} = { code=200 | status=up | description=None | message=None }</msg>
+<status status="PASS" starttime="20231016 14:30:25.745" endtime="20231016 14:30:25.745"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.code}</arg>
+<arg>${json.code}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20231016 14:30:25.745" endtime="20231016 14:30:25.746"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.status}</arg>
+<arg>${json.status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20231016 14:30:25.746" endtime="20231016 14:30:25.747"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.description}</arg>
+<arg>${json.description}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20231016 14:30:25.747" endtime="20231016 14:30:25.747"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.message}</arg>
+<arg>${json.message}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20231016 14:30:25.748" endtime="20231016 14:30:25.748"/>
+</kw>
+<status status="PASS" starttime="20231016 14:30:25.744" endtime="20231016 14:30:25.748"/>
+</kw>
+<doc>to verify how api return health from news service</doc>
+<tag>ready</tag>
+<tag>regression</tag>
+<tag>success</tag>
+<status status="PASS" starttime="20231016 14:30:25.734" endtime="20231016 14:30:25.748"/>
+</test>
+<test id="s1-t2" name="TC_BE_00002 fail - get health from news service without api key" line="66">
+<kw name="When Call api for health without api key">
+<kw name="Create Dictionary" library="BuiltIn">
+<var>${headers}</var>
+<arg>Api-Key=null</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<msg timestamp="20231016 14:30:25.750" level="INFO">${headers} = {'Api-Key': 'null'}</msg>
+<status status="PASS" starttime="20231016 14:30:25.749" endtime="20231016 14:30:25.750"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>get_health</arg>
+<arg>${uri_movie}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20231016 14:30:25.752" level="INFO">GET Request : url=http://localhost:8080/project-os-container/movie/ 
+ path_url=/project-os-container/movie/ 
+ headers={'User-Agent': 'python-requests/2.29.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Api-Key': 'null'} 
+ body=None 
+ </msg>
+<msg timestamp="20231016 14:30:25.752" level="INFO">GET Response : url=http://localhost:8080/project-os-container/movie/ 
+ status=401, reason=Unauthorized 
+ headers={'Content-Type': 'application/json; charset=utf-8', 'Date': 'Mon, 16 Oct 2023 07:30:25 GMT', 'Content-Length': '168'} 
+ body={"code":"1001","error":"api_key_error","thai_description":"ไม่มีสิทธ์ในการร้องขอ","english_description":"Invalid credentials"} 
+ </msg>
+<msg timestamp="20231016 14:30:25.752" level="INFO">${response} = &lt;Response [401]&gt;</msg>
+<status status="PASS" starttime="20231016 14:30:25.750" endtime="20231016 14:30:25.752"/>
+</kw>
+<kw name="Set Test Variable" library="BuiltIn">
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current test.</doc>
+<msg timestamp="20231016 14:30:25.752" level="INFO">${response} = &lt;Response [401]&gt;</msg>
+<status status="PASS" starttime="20231016 14:30:25.752" endtime="20231016 14:30:25.752"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${response.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20231016 14:30:25.753" level="INFO">{"code":"1001","error":"api_key_error","thai_description":"ไม่มีสิทธ์ในการร้องขอ","english_description":"Invalid credentials"}</msg>
+<status status="PASS" starttime="20231016 14:30:25.752" endtime="20231016 14:30:25.753"/>
+</kw>
+<status status="PASS" starttime="20231016 14:30:25.749" endtime="20231016 14:30:25.753"/>
+</kw>
+<kw name="Then Verify response http status">
+<arg>401</arg>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expect}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<msg timestamp="20231016 14:30:25.753" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231016 14:30:25.753" endtime="20231016 14:30:25.753"/>
+</kw>
+<status status="PASS" starttime="20231016 14:30:25.753" endtime="20231016 14:30:25.753"/>
+</kw>
+<kw name="And Verify error response body">
+<arg>${fail.missing_api_key}</arg>
+<kw name="Set Variable" library="BuiltIn">
+<var>&amp;{json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20231016 14:30:25.754" level="INFO">&amp;{json} = { code=1001 | error=api_key_error | thai_description=ไม่มีสิทธ์ในการร้องขอ | english_description=Invalid credentials }</msg>
+<status status="PASS" starttime="20231016 14:30:25.754" endtime="20231016 14:30:25.754"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.code}</arg>
+<arg>${json.code}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20231016 14:30:25.755" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20231016 14:30:25.754" endtime="20231016 14:30:25.755"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.error}</arg>
+<arg>${json.error}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20231016 14:30:25.755" endtime="20231016 14:30:25.756"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.thai_description}</arg>
+<arg>${json.thai_description}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20231016 14:30:25.756" endtime="20231016 14:30:25.756"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${expect.english_description}</arg>
+<arg>${json.english_description}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20231016 14:30:25.756" endtime="20231016 14:30:25.757"/>
+</kw>
+<status status="PASS" starttime="20231016 14:30:25.754" endtime="20231016 14:30:25.757"/>
+</kw>
+<doc>to verify how api return health from news service without api key</doc>
+<tag>fail</tag>
+<tag>ready</tag>
+<tag>regression</tag>
+<status status="PASS" starttime="20231016 14:30:25.748" endtime="20231016 14:30:25.757"/>
+</test>
+<status status="PASS" starttime="20231016 14:30:25.631" endtime="20231016 14:30:25.757"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="1" fail="0" skip="0">fail</stat>
+<stat pass="2" fail="0" skip="0">ready</stat>
+<stat pass="2" fail="0" skip="0">regression</stat>
+<stat pass="1" fail="0" skip="0">success</stat>
+</tag>
+<suite>
+<stat pass="2" fail="0" skip="0" id="s1" name="Movie-Gethealth">Movie-Gethealth</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

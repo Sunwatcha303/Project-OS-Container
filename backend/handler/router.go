@@ -5,6 +5,7 @@ import (
 
 	"github.com/Sunwatcha303/Project-OS-Container/middleware"
 	"github.com/Sunwatcha303/Project-OS-Container/service/central"
+	"github.com/Sunwatcha303/Project-OS-Container/service/movie"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -20,10 +21,12 @@ type route struct {
 type Routes struct {
 	router         *gin.Engine
 	centralService []route
+	movieService   []route
 }
 
 func (r Routes) InitRouter() http.Handler {
 	centralEndpoint := central.NewEndpoint()
+	movieEndpoint := movie.NewEndpoint()
 
 	r.centralService = []route{
 		{
@@ -32,6 +35,25 @@ func (r Routes) InitRouter() http.Handler {
 			Method:      http.MethodGet,
 			Patten:      "/",
 			Endpoint:    centralEndpoint.Health,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+	}
+
+	r.movieService = []route{
+		{
+			Name:        "Get: health",
+			Description: "Get health status from server",
+			Method:      http.MethodGet,
+			Patten:      "/movie/",
+			Endpoint:    movieEndpoint.Health,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		{
+			Name:        "POST: add movie",
+			Description: "Add movie into server",
+			Method:      http.MethodPost,
+			Patten:      "/movie/add",
+			Endpoint:    movieEndpoint.AddMovie,
 			Validation:  middleware.NoMiddlewareValitdation,
 		},
 	}
@@ -45,6 +67,9 @@ func (r Routes) InitRouter() http.Handler {
 
 	mainRoute := ro.Group("project-os-container")
 	for _, e := range r.centralService {
+		mainRoute.Handle(e.Method, e.Patten, e.Validation, e.Endpoint)
+	}
+	for _, e := range r.movieService {
 		mainRoute.Handle(e.Method, e.Patten, e.Validation, e.Endpoint)
 	}
 	return ro
