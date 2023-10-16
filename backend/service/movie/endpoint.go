@@ -22,8 +22,6 @@ func NewEndpoint() *Endpoint {
 
 func (e *Endpoint) Health(c *gin.Context) {
 	api_key := c.GetHeader("Api_Key")
-	fmt.Println("HelloWorld")
-	fmt.Printf("test %+v", api_key)
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found %+v\n", errorResponse)
@@ -55,7 +53,7 @@ func (e *Endpoint) AddMovie(c *gin.Context) {
 		return
 	}
 	if err := e.logic.AddMovieLogic(requestBody); err != nil {
-
+	
 	}
 	c.JSON(http.StatusCreated, nil)
 }

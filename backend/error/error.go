@@ -115,13 +115,13 @@ var CodesError = map[error]string{
 }
 
 var ThaiDescription = map[error]string{
-	InternalServerError: "เกิดข้อผิดพลาดที่เซิฟเวอร์, โปรดลองใหม่อีกครั้ง",
+	InternalServerError: "เกิดข้อผิดพลาดที่เซิฟเวอร์",
 	ApiKeyError:         "ไม่มีสิทธ์ในการร้องขอ",
 }
 
 var EnglishDescription = map[error]string{
-	InternalServerError: "There was an error on the server, please try again.",
-	ApiKeyError:         "Invalid credentials, please try again",
+	InternalServerError: "There was an error on the server,",
+	ApiKeyError:         "Invalid credentials",
 }
 
 func GetErrorResponse(err error) (int, HttpErrorResponse) {
