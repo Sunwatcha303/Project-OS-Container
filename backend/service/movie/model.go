@@ -18,6 +18,6 @@ type MovieResponse struct {
 	IdMovie    int     `json:"id_movie"`
 	MovieName  string  `json:"movie_name"`
 	MovieScore float64 `json:"movie_score"`
-	Category   float64 `json:"category"`
+	Category   string  `json:"category"`
 	ImageMovie string  `json:"image_movie"`
 }

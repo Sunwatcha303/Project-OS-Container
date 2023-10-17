@@ -13,7 +13,7 @@ type DB struct {
 	DB *gorm.DB
 }
 
-var database DB
+var Database DB
 
 func InitDatabaseConnection() {
 	var ConnectionMasterDB string = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&",
@@ -30,5 +30,5 @@ func InitDatabaseConnection() {
 		log.Fatalf(fmt.Sprintf("[Database] failed to connect database: %s\n", err.Error()))
 	}
 
-	database.DB = db
+	Database.DB = db
 }
