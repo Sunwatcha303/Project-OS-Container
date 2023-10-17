@@ -1,24 +1,28 @@
--- DRAFT 1
+-- FINAL DRAFT
+
+DROP TABLE review;
+DROP TABLE movie;
+DROP TABLE actor;
+DROP TABLE movie_actor;
 
 CREATE TABLE IF NOT EXISTS actor(
     id_actor INT PRIMARY KEY,
-    actor_name VARCHAR(30)
-);
-
-CREATE TABLE IF NOT EXISTS category(
-    id_category INT PRIMARY KEY,
-    th_name VARCHAR(30),
-    en_name VARCHAR(30)
+    actor_name VARCHAR(30),
+    sex VARCHAR(1)
 );
 
 CREATE TABLE IF NOT EXISTS movie (
     id_movie INT PRIMARY KEY,
     movie_name VARCHAR(50),
+    movie_score FLOAT DEFAULT 0,
+    category VARCHAR(30),
+    image_movie LONGBLOB
+);
+
+CREATE TABLE IF NOT EXISTS movie_actor (
+    id_movie INT,
     id_actor INT,
-    id_category INT,
-    movie_score FLOAT,
-    FOREIGN KEY (id_actor) REFERENCES actor(id_actor),
-    FOREIGN KEY (id_category) REFERENCES category(id_category)
+    PRIMARY KEY (id_movie,id_actor)
 );
 
 CREATE TABLE IF NOT EXISTS review (
