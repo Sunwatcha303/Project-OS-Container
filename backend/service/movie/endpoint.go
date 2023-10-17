@@ -41,19 +41,19 @@ func (e *Endpoint) AddMovie(c *gin.Context) {
 	api_key := c.GetHeader("Api_Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
-		fmt.Printf("[movie] api key not found %+v\n", errorResponse)
+		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
 	}
 	var requestBody MovieRequest
 	if err := c.BindJSON(&requestBody); err != nil {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
-		fmt.Printf("[movie] Internal Server error %+v\n", errorResponse)
+		fmt.Printf("[movie] Internal Server error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
 	}
 	if err := e.logic.AddMovieLogic(requestBody); err != nil {
-	
+		//httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError)
 	}
 	c.JSON(http.StatusCreated, nil)
 }
