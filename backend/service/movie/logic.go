@@ -46,7 +46,11 @@ func (l *MovieLogic) AddMovieLogic(request MovieRequest) (err error) {
 }
 
 func (l *MovieLogic) DeleteMoviebyIdLogic(v_id string) (err error) {
-	id, err := strconv.Atoi(v_id)
+	var id int
+	id, err = strconv.Atoi(v_id)
+	if err != nil {
+		return templateError.BadrequestError
+	}
 	var exitsMovie *MovieResponse
 	if exitsMovie, err = l.MovieRepository.GetMovieById(id); err != nil {
 		return err
