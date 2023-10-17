@@ -5,7 +5,6 @@ DROP TABLE movie;
 DROP TABLE actor;
 DROP TABLE movie_actor;
 
-
 CREATE TABLE IF NOT EXISTS actor(
     id_actor INT PRIMARY KEY,
     actor_name VARCHAR(30),
@@ -17,7 +16,7 @@ CREATE TABLE IF NOT EXISTS movie (
     movie_name VARCHAR(50),
     movie_score FLOAT DEFAULT 0,
     category VARCHAR(30),
-    image_movie LONGBLOB,
+    image_movie LONGBLOB
 );
 
 CREATE TABLE IF NOT EXISTS movie_actor (
