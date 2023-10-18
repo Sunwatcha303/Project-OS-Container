@@ -114,7 +114,43 @@ fetch('http://localhost:8080/project-os-container/')
 //         console.error('Request error:', error);
 //     });
 
+//part1 by sun
+const image = document.getElementById("movie-image");
+const name_movie = document.getElementById("movie-name")
+const score_movie = document.getElementById("average")
+const category_movie = document.getElementById("category")
 
+async function getImage() {
+    try {
+        const header = {
+            'Api_Key': '1234567890'
+        }
+        const response = await fetch("http://localhost:8080/project-os-container/movie/1", { method: "GET", headers: header });
 
+        if (response.status === 200) {
+            const movieData = await response.json();
 
+            const base64String = movieData.image_movie;
+            const binaryString = atob(base64String);
+            const uint8Array = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                uint8Array[i] = binaryString.charCodeAt(i);
+            }
 
+            const blob = new Blob([uint8Array], { type: "image/jpeg" });
+            const urlCreator = window.URL || window.webkitURL;
+
+            image.src = urlCreator.createObjectURL(blob);
+
+            name_movie.innerHTML = movieData.movie_name
+            score_movie.innerHTML = movieData.movie_score
+            category_movie.innerHTML = movieData.category
+        } else {
+            alert("Error fetching the image.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+getImage();
