@@ -56,29 +56,6 @@ stars.forEach(star => {
     });
 });
 
-
-// เพิ่มรีวิวของหนัง
-// document.getElementById("review-form").addEventListener("submit", function (event) {
-//     event.preventDefault();
-
-//     // คำสั่ง AJAX เพื่อดึงคะแนนเฉลี่ยจากไฟล์ PHP
-//     var xhr = new XMLHttpRequest();
-//     xhr.open("GET", "getAverageRating.php", true);
-//     xhr.onreadystatechange = function () {
-//         if (xhr.readyState === 4 && xhr.status === 200) {
-//             var averageRating = xhr.responseText;
-//             document.getElementById("average").textContent = averageRating;
-//         }
-//     };
-//     xhr.send();
-
-//     // เพิ่มรีวิว
-//     // ...
-
-//     // ล้างฟอร์ม
-//     // ...
-// });
-
 //part1
 const image = document.getElementById("movie-image");
 const name_movie = document.getElementById("movie-name")
@@ -119,7 +96,3 @@ async function getImage() {
 }
 
 getImage();
-
-
-
-
