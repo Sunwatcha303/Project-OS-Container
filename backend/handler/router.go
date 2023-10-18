@@ -6,6 +6,7 @@ import (
 	"github.com/Sunwatcha303/Project-OS-Container/middleware"
 	"github.com/Sunwatcha303/Project-OS-Container/service/central"
 	"github.com/Sunwatcha303/Project-OS-Container/service/movies"
+	"github.com/Sunwatcha303/Project-OS-Container/service/reviews"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -22,11 +23,13 @@ type Routes struct {
 	router         *gin.Engine
 	centralService []route
 	movieService   []route
+	reviewService  []route
 }
 
 func (r Routes) InitRouter() http.Handler {
 	centralEndpoint := central.NewEndpoint()
 	movieEndpoint := movies.NewEndpoint()
+	reviewEndpoint := reviews.NewEndpoint()
 
 	r.centralService = []route{
 		{
@@ -94,6 +97,25 @@ func (r Routes) InitRouter() http.Handler {
 			Method:      http.MethodDelete,
 			Patten:      "/movies/delete/:movie_id",
 			Endpoint:    movieEndpoint.DeleteMoviebyId,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+	}
+
+	r.reviewService = []route{
+		{
+			Name:        "Get: health",
+			Description: "Get health status from server",
+			Method:      http.MethodGet,
+			Patten:      "/review/",
+			Endpoint:    reviewEndpoint.Health,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		{
+			Name:        "GET: get all reviews",
+			Description: "Get all reviews from server",
+			Method:      http.MethodGet,
+			Patten:      "/reviews/all",
+			Endpoint:    reviewEndpoint.GetAllReviews,
 			Validation:  middleware.NoMiddlewareValitdation,
 		},
 	}
