@@ -5,7 +5,7 @@ import (
 
 	"github.com/Sunwatcha303/Project-OS-Container/middleware"
 	"github.com/Sunwatcha303/Project-OS-Container/service/central"
-	"github.com/Sunwatcha303/Project-OS-Container/service/movie"
+	"github.com/Sunwatcha303/Project-OS-Container/service/movies"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +26,7 @@ type Routes struct {
 
 func (r Routes) InitRouter() http.Handler {
 	centralEndpoint := central.NewEndpoint()
-	movieEndpoint := movie.NewEndpoint()
+	movieEndpoint := movies.NewEndpoint()
 
 	r.centralService = []route{
 		{
@@ -65,6 +65,14 @@ func (r Routes) InitRouter() http.Handler {
 			Validation:  middleware.NoMiddlewareValitdation,
 		},
 		{
+			Name:        "GET: get score by movie id",
+			Description: "get score from server by id",
+			Method:      http.MethodGet,
+			Patten:      "/movies/score/:movie_id",
+			Endpoint:    movieEndpoint.GetScoreBymovieid,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		{
 			Name:        "POST: add movie",
 			Description: "Add movie into server",
 			Method:      http.MethodPost,
@@ -94,7 +102,7 @@ func (r Routes) InitRouter() http.Handler {
 	ro.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders: []string{"Accept", "Context-type"},
+		AllowHeaders: []string{"Accept", "Api_key"},
 	}))
 
 	mainRoute := ro.Group("project-os-container")

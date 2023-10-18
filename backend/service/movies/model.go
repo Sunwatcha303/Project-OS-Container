@@ -1,4 +1,4 @@
-package movie
+package movies
 
 type HealthResponse struct {
 	Code        int     `json:"code"`
@@ -20,4 +20,8 @@ type MovieResponse struct {
 	MovieScore float64 `json:"movie_score"`
 	Category   string  `json:"category"`
 	ImageMovie string  `json:"image_movie"`
+}
+
+type ScoreResponse struct {
+	MovieScore float64 `json:"movie_score"`
 }

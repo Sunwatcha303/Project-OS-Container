@@ -1,4 +1,4 @@
-package movie
+package movies
 
 import (
 	"strconv"
@@ -35,6 +35,17 @@ func (l *MovieLogic) GetMovieByIdLogic(v_id string) (response *MovieResponse, er
 	return
 }
 
+func (l *MovieLogic) GetScoreBymovieidLogic(v_id string) (response *ScoreResponse, err error) {
+	id, err := strconv.Atoi(v_id)
+	if err != nil {
+		return nil, templateError.BadrequestError
+	}
+	if response, err = l.MovieRepository.GetScoreBymovieid(id); err != nil {
+		return nil, err
+	}
+	return
+}
+
 func (l *MovieLogic) AddMovieLogic(request MovieRequest) (err error) {
 	if request.IdMovie <= 0 || request.MovieName == "" || request.Category == "" || request.ImageMovie == "" {
 		return templateError.BadrequestError
@@ -51,11 +62,8 @@ func (l *MovieLogic) DeleteMoviebyIdLogic(v_id string) (err error) {
 	if err != nil {
 		return templateError.BadrequestError
 	}
-	var exitsMovie *MovieResponse
-	if exitsMovie, err = l.MovieRepository.GetMovieById(id); err != nil {
+	if _, err = l.MovieRepository.GetMovieById(id); err != nil {
 		return err
-	} else if exitsMovie == nil {
-		return templateError.MovieNotFoundError
 	}
 	if err = l.MovieRepository.DeleteMoviebyId(id); err != nil {
 		return err

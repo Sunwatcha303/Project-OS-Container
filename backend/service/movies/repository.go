@@ -1,4 +1,4 @@
-package movie
+package movies
 
 import (
 	"errors"
@@ -31,6 +31,21 @@ func (r *MovieRepository) GetMovieById(id int) (response *MovieResponse, err err
 	}
 	db := config.Database.DB
 	if err = db.Table("movie").Select("*").Where("id_movie = ?", id).First(&response).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, templateError.MovieNotFoundError
+		} else {
+			return nil, err
+		}
+	}
+	return
+}
+
+func (r *MovieRepository) GetScoreBymovieid(id int) (response *ScoreResponse, err error) {
+	if config.Database.DB == nil {
+		return nil, templateError.DatabaseConnectedError
+	}
+	db := config.Database.DB
+	if err = db.Table("movie").Select("movie_score").Where("id_movie = ?", id).First(&response).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, templateError.MovieNotFoundError
 		} else {

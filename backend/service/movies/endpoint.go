@@ -1,4 +1,4 @@
-package movie
+package movies
 
 import (
 	"fmt"
@@ -72,6 +72,23 @@ func (e *Endpoint) GetMovieById(c *gin.Context) {
 	}
 }
 
+func (e *Endpoint) GetScoreBymovieid(c *gin.Context) {
+	api_key := c.GetHeader("Api_Key")
+	if api_key != constants.Api_Key {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
+		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+	}
+	id := c.Param("movie_id")
+	if response, err := e.logic.GetScoreBymovieidLogic(id); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
+		fmt.Printf("[movie] error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+	} else {
+		c.JSON(http.StatusOK, response)
+	}
+}
+
 func (e *Endpoint) AddMovie(c *gin.Context) {
 	api_key := c.GetHeader("Api_Key")
 	if api_key != constants.Api_Key {
@@ -115,7 +132,7 @@ func (e *Endpoint) DeleteMoviebyId(c *gin.Context) {
 	}
 	id := c.Param("movie_id")
 	if err := e.logic.DeleteMoviebyIdLogic(id); err != nil {
-		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
 		fmt.Printf("[movie] error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
