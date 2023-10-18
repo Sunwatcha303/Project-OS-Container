@@ -118,14 +118,14 @@ fetch('http://localhost:8080/project-os-container/')
 const image = document.getElementById("movie-image");
 const name_movie = document.getElementById("movie-name")
 const score_movie = document.getElementById("average")
+const category_movie = document.getElementById("category")
 
 async function getImage() {
     try {
         const header = {
-            'Content-Type': 'application/json',
             'Api_Key': '1234567890'
         }
-        const response = await fetch("http://localhost:8080/project-os-container/movie/1", { method: "GET", headers: header }); // Replace '1' with the actual image ID
+        const response = await fetch("http://localhost:8080/project-os-container/movie/1", { method: "GET", headers: header });
 
         if (response.status === 200) {
             const movieData = await response.json();
@@ -137,14 +137,14 @@ async function getImage() {
                 uint8Array[i] = binaryString.charCodeAt(i);
             }
 
-            const blob = new Blob([uint8Array], { type: "image/jpeg" }); // Adjust the content type as needed
+            const blob = new Blob([uint8Array], { type: "image/jpeg" });
             const urlCreator = window.URL || window.webkitURL;
 
             image.src = urlCreator.createObjectURL(blob);
 
-            console.log(image.src)
             name_movie.innerHTML = movieData.movie_name
             score_movie.innerHTML = movieData.movie_score
+            category_movie.innerHTML = movieData.category
         } else {
             alert("Error fetching the image.");
         }
