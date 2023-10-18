@@ -16,7 +16,7 @@ document.getElementById("review-form").addEventListener("submit", function (even
     // ล้างฟอร์ม
     // document.getElementById("movie-name").value = "";
     document.getElementById("user-name").value = "";
-    document.getElementById("rating").value = "";
+    document.getElementById("rating").value = "0";
     document.getElementById("user-review").value = "";
 });
 
@@ -31,7 +31,7 @@ function resetStars() {
 function displayReview(userName, rating, userReview) {
     const reviewDiv = document.createElement("div");
     reviewDiv.className = "review"; // เพิ่มคลาส "review"
-    reviewDiv.innerHTML = `ชื่อ ${userName}<p>คะแนน: ${rating} ดาว${userReview} </p>`;
+    reviewDiv.innerHTML = `Name ${userName} (${rating} star)</p><p> ${userReview} </p>`;
     document.getElementById("movie-list").appendChild(reviewDiv);
 }
 
@@ -56,7 +56,65 @@ stars.forEach(star => {
     });
 });
 
-//part1
+//aum
+fetch('http://localhost:8080/project-os-container/')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        displayReview(data.code, data.status, "kuy savelnwza");
+        data.forEach(review => {
+            displayReview(review.code, review.status, review.message);
+        });
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+
+
+// Define the API endpoint URL
+// const url = 'http://localhost:8080/project-os-container/'; // Replace with your API endpoint URL
+
+// // Define the JSON data you want to send
+// const data = {
+//     key1: 'value1',
+//     key2: 'value2'
+// };
+
+// // Convert the data to a JSON string
+// const jsonData = JSON.stringify(data);
+
+// // Set the headers to indicate that you're sending JSON data
+// const headers = {
+//     'Content-Type': 'application/json'
+// };
+
+// // Create a POST request using the fetch API
+// fetch(url, {
+//     method: 'POST',
+//     headers: headers,
+//     body: jsonData
+// })
+//     .then(response => {
+//         // Check for a successful response (status code 2xx indicates success)
+//         if (response.ok) {
+//             return response.json(); // Parse the response as JSON
+//         } else {
+//             throw new Error('Request failed with status ' + response.status);
+//         }
+//     })
+//     .then(responseData => {
+//         console.log('Request was successful.');
+//         console.log('Response data:', responseData);
+//     })
+//     .catch(error => {
+//         console.error('Request error:', error);
+//     });
+
+//part1 by sun
 const image = document.getElementById("movie-image");
 const name_movie = document.getElementById("movie-name")
 const score_movie = document.getElementById("average")
