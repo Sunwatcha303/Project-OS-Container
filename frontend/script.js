@@ -1,7 +1,7 @@
 // เพิ่มรีวิวของหนัง
 document.getElementById("review-form").addEventListener("submit", function (event) {
     event.preventDefault();
-    
+
     const userName = document.getElementById("user-name").value;
     const rating = parseInt(document.getElementById("rating").value);
     const userReview = document.getElementById("user-review").value;
@@ -16,7 +16,7 @@ document.getElementById("review-form").addEventListener("submit", function (even
     // ล้างฟอร์ม
     // document.getElementById("movie-name").value = "";
     document.getElementById("user-name").value = "";
-    document.getElementById("rating").value = "";
+    document.getElementById("rating").value = "0";
     document.getElementById("user-review").value = "";
 });
 
@@ -31,7 +31,7 @@ function resetStars() {
 function displayReview(userName, rating, userReview) {
     const reviewDiv = document.createElement("div");
     reviewDiv.className = "review"; // เพิ่มคลาส "review"
-    reviewDiv.innerHTML = `ชื่อ ${userName}<p>คะแนน: ${rating} ดาว${userReview} </p>`;
+    reviewDiv.innerHTML = `Name ${userName} (${rating} star)</p><p> ${userReview} </p>`;
     document.getElementById("movie-list").appendChild(reviewDiv);
 }
 
@@ -56,31 +56,101 @@ stars.forEach(star => {
     });
 });
 
+//aum
+fetch('http://localhost:8080/project-os-container/')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        displayReview(data.code, data.status, "kuy savelnwza");
+        data.forEach(review => {
+            displayReview(review.code, review.status, review.message);
+        });
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
 
-// เพิ่มรีวิวของหนัง
-// document.getElementById("review-form").addEventListener("submit", function (event) {
-//     event.preventDefault();
 
-//     // คำสั่ง AJAX เพื่อดึงคะแนนเฉลี่ยจากไฟล์ PHP
-//     var xhr = new XMLHttpRequest();
-//     xhr.open("GET", "getAverageRating.php", true);
-//     xhr.onreadystatechange = function () {
-//         if (xhr.readyState === 4 && xhr.status === 200) {
-//             var averageRating = xhr.responseText;
-//             document.getElementById("average").textContent = averageRating;
+// Define the API endpoint URL
+// const url = 'http://localhost:8080/project-os-container/'; // Replace with your API endpoint URL
+
+// // Define the JSON data you want to send
+// const data = {
+//     key1: 'value1',
+//     key2: 'value2'
+// };
+
+// // Convert the data to a JSON string
+// const jsonData = JSON.stringify(data);
+
+// // Set the headers to indicate that you're sending JSON data
+// const headers = {
+//     'Content-Type': 'application/json'
+// };
+
+// // Create a POST request using the fetch API
+// fetch(url, {
+//     method: 'POST',
+//     headers: headers,
+//     body: jsonData
+// })
+//     .then(response => {
+//         // Check for a successful response (status code 2xx indicates success)
+//         if (response.ok) {
+//             return response.json(); // Parse the response as JSON
+//         } else {
+//             throw new Error('Request failed with status ' + response.status);
 //         }
-//     };
-//     xhr.send();
-    
-//     // เพิ่มรีวิว
-//     // ...
+//     })
+//     .then(responseData => {
+//         console.log('Request was successful.');
+//         console.log('Response data:', responseData);
+//     })
+//     .catch(error => {
+//         console.error('Request error:', error);
+//     });
 
-//     // ล้างฟอร์ม
-//     // ...
-// });
+//part1 by sun
+const image = document.getElementById("movie-image");
+const name_movie = document.getElementById("movie-name")
+const score_movie = document.getElementById("average")
+const category_movie = document.getElementById("category")
 
+async function getImage() {
+    try {
+        const header = {
+            'Api_Key': '1234567890'
+        }
+        const response = await fetch("http://localhost:8080/project-os-container/movie/1", { method: "GET", headers: header });
 
+        if (response.status === 200) {
+            const movieData = await response.json();
 
+            const base64String = movieData.image_movie;
+            const binaryString = atob(base64String);
+            const uint8Array = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                uint8Array[i] = binaryString.charCodeAt(i);
+            }
 
+            const blob = new Blob([uint8Array], { type: "image/jpeg" });
+            const urlCreator = window.URL || window.webkitURL;
 
+            image.src = urlCreator.createObjectURL(blob);
 
+            name_movie.innerHTML = movieData.movie_name
+            score_movie.innerHTML = movieData.movie_score
+            category_movie.innerHTML = movieData.category
+        } else {
+            alert("Error fetching the image.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+getImage();
