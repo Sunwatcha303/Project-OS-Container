@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/frontend/css/review_styles.css">
+    <title>รีวิวหนัง</title>
+</head>
+
+<body>
+    <h1>Review movie</h1>
+    </div>
+    <div id="average-rating">
+        AVG score: <span id="average">Loading...</span>
+    </div>
+    <img id="movie-image" src="" alt="Image">
+    <h1 id="movie-name">Loading...</h1>
+    <div>
+        <p id="category">Category: </p>
+    </div>
+
+    <!-- แก้ไขฟอร์มเพื่อเลือกคะแนนดาว -->
+    <form id="review-form">
+        <div class="rating">
+            <span class="star" data-rating="1">&#9733;</span>
+            <span class="star" data-rating="2">&#9733;</span>
+            <span class="star" data-rating="3">&#9733;</span>
+            <span class="star" data-rating="4">&#9733;</span>
+            <span class="star" data-rating="5">&#9733;</span>
+            <input type="hidden" name="rating" id="rating" value="0" required>
+        </div>
+        <label for="user-name">Name:</label>
+        <input type="text" id="user-name" name="user-name" required> <!-- ช่องใส่ชื่อ -->
+        <label for="user-review">Review:</label>
+        <textarea id="user-review" name="user-review" required></textarea>
+        <button type="submitt">submit</button>
+    </form>
+    <div id="output"></div>
+    <div id="movie-list">
+        <!-- แสดงรายการหนังและคะแนนดาวที่มีในฐานข้อมูล -->
+    </div>
+    <script src="/frontend/js/review_script.js"></script>
+</body>
+
+</html>
