@@ -100,28 +100,48 @@ func FindError(errorName string) (err error) {
 }
 
 var (
-	InternalServerError TemplateError = New("internal_server_error")
-	ApiKeyError         TemplateError = New("api_key_error")
+	InternalServerError    TemplateError = New("internal_server_error")
+	ApiKeyError            TemplateError = New("api_key_error")
+	DatabaseConnectedError TemplateError = New("database_connected_error")
+	BadrequestError        TemplateError = New("Bad_request_Error")
+	MovieNotFoundError     TemplateError = New("movie_not_found_error")
+	ReviewNotFoundError    TemplateError = New("review_not_found_error")
 )
 
 var HttpStatusCodes = map[error]int{
-	InternalServerError: 500,
-	ApiKeyError:         401,
+	InternalServerError:    500,
+	ApiKeyError:            401,
+	DatabaseConnectedError: 500,
+	BadrequestError:        400,
+	MovieNotFoundError:     404,
+	ReviewNotFoundError:    404,
 }
 
 var CodesError = map[error]string{
-	InternalServerError: "1000",
-	ApiKeyError:         "1001",
+	InternalServerError:    "1000",
+	ApiKeyError:            "1001",
+	DatabaseConnectedError: "1002",
+	BadrequestError:        "1004",
+	MovieNotFoundError:     "1005",
+	ReviewNotFoundError:    "1006",
 }
 
 var ThaiDescription = map[error]string{
-	InternalServerError: "เกิดข้อผิดพลาดที่เซิฟเวอร์",
-	ApiKeyError:         "ไม่มีสิทธ์ในการร้องขอ",
+	InternalServerError:    "เกิดข้อผิดพลาดที่เซิฟเวอร์",
+	ApiKeyError:            "ไม่มีสิทธ์ในการร้องขอ",
+	DatabaseConnectedError: "ไม่สามารถเชื่อมต่อฐานข้อมูลได้",
+	BadrequestError:        "คำขอไม่ถูกต้อง",
+	MovieNotFoundError:     "ไม่พบข้อมูลภาพยนตร์",
+	ReviewNotFoundError:    "ไม่พบข้อมูลการรีวิว",
 }
 
 var EnglishDescription = map[error]string{
-	InternalServerError: "There was an error on the server,",
-	ApiKeyError:         "Invalid credentials",
+	InternalServerError:    "There was an error on the server,",
+	ApiKeyError:            "Invalid credentials",
+	DatabaseConnectedError: "Unable to connect to database",
+	BadrequestError:        "Invalid request",
+	MovieNotFoundError:     "Movie not found",
+	ReviewNotFoundError:    "Review not found",
 }
 
 func GetErrorResponse(err error) (int, HttpErrorResponse) {
