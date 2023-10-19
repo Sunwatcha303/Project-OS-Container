@@ -31,6 +31,6 @@ CREATE TABLE IF NOT EXISTS review (
     id_movie INT,
     comment VARCHAR(200),
     score FLOAT,
-    time TIMESTAMP,
+    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_movie) REFERENCES movie(id_movie)
 );
