@@ -154,3 +154,49 @@ async function getImage() {
 }
 
 getImage();
+
+
+
+
+
+//part2 by Man
+
+document.getElementById("review-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    
+    // ส่งข้อมูลไปยังเซิร์ฟเวอร์เพื่อบันทึกลงในฐานข้อมูล
+    // ตรวจสอบความถูกต้องของข้อมูลก่อนส่ง
+
+    const userName = document.getElementById("user-name").value;
+    const rating = parseInt(document.getElementById("rating").value);
+    const userReview = document.getElementById("user-review").value; 
+    const data = {
+        name: userName,
+        id_movie:'1',
+        comment:userReview,
+        score:rating
+    };
+    try {
+        const header = {
+            'Api_Key': '1234567890'
+        }
+        const response = fetch("http://localhost:8080/project-os-container/addReview/1", { method: "POST", headers: header ,body:JSON.stringify(data)});
+        if (response.status === 201) {
+            console.log("Success")
+        } else {
+            alert("Error");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    
+    // หลังจากบันทึกเสร็จสิ้น, รีเซ็ตคะแนนดาวและแสดงการรีเซ็ต
+    resetStars();
+    displayReview(userName, rating, userReview);
+    
+    // ล้างฟอร์ม
+    // document.getElementById("movie-name").value = "";
+    document.getElementById("user-name").value = "";
+    document.getElementById("rating").value = "0";
+    document.getElementById("user-review").value = "";
+});
