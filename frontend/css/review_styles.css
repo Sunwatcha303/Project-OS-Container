@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Charm:wght@700&display=swap');
+
 body {
-    font-family: 'Charm', cursive; 
+    font-family: 'Charm', cursive;
     background-color: #0000001a;
     text-align: center;
 }
@@ -35,7 +36,8 @@ label {
     font-weight: bold;
 }
 
-input, textarea {
+input,
+textarea {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
@@ -86,4 +88,3 @@ button:hover {
 .review {
     text-align: left;
 }
-
