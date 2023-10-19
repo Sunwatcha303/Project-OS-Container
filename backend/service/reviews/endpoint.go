@@ -43,6 +43,7 @@ func (e *Endpoint) GetAllReviews(c *gin.Context) {
 		httpStusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStusCode, errorResponse)
+		return
 	}
 	if response, err := e.logic.GetAllReviewsLogic(); err != nil {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
@@ -61,6 +62,7 @@ func (e *Endpoint) GetAllReviewsbyMovieId(c *gin.Context) {
 		httpStusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStusCode, errorResponse)
+		return
 	}
 	id := c.Param("movie_id")
 	if response, err := e.logic.GetAllReviewsbyMovieIdLogic(id); err != nil {
@@ -104,6 +106,7 @@ func (e *Endpoint) UpdateReviewbyId(c *gin.Context) {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
 	}
 	id := c.Param("id")
 	var requestBody ReviewUpdateRequest
@@ -128,6 +131,7 @@ func (e *Endpoint) DeleteReviewbyId(c *gin.Context) {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
 	}
 	id := c.Param("id")
 	if err := e.logic.DeleteMoviebyIdLogic(id); err != nil {

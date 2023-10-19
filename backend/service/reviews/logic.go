@@ -57,13 +57,16 @@ func (l *ReviewsLogic) UpdateReviewbyIdLogic(v_id string, request ReviewUpdateRe
 	if err != nil {
 		return templateError.BadrequestError
 	}
-	if _, err = l.ReviewsRepository.GetReviewsbyId(id); err != nil {
+	var existRecord *ReviewResponse
+	if existRecord, err = l.ReviewsRepository.GetReviewsbyId(id); err != nil {
 		return templateError.ReviewNotFoundError
 	}
 	if request.Name == nil && request.Comment == nil && request.Score == nil {
 		return templateError.BadrequestError
+	} else if *request.Score < 0 || *request.Score > 5 {
+		return templateError.BadrequestError
 	}
-	if err = l.ReviewsRepository.UpdateReviewbyId(id, request); err != nil {
+	if err = l.ReviewsRepository.UpdateReviewbyId(id, existRecord.IdMovie, request); err != nil {
 		return err
 	}
 	return
@@ -75,10 +78,11 @@ func (l *ReviewsLogic) DeleteMoviebyIdLogic(v_id string) (err error) {
 	if err != nil {
 		return templateError.BadrequestError
 	}
-	if _, err = l.ReviewsRepository.GetReviewsbyId(id); err != nil {
+	var existRecord *ReviewResponse
+	if existRecord, err = l.ReviewsRepository.GetReviewsbyId(id); err != nil {
 		return err
 	}
-	if err = l.ReviewsRepository.DeleteReviewById(id); err != nil {
+	if err = l.ReviewsRepository.DeleteReviewById(id, existRecord.IdMovie); err != nil {
 		return err
 	}
 	return
