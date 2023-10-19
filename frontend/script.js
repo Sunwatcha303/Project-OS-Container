@@ -1,25 +1,3 @@
-// เพิ่มรีวิวของหนัง
-document.getElementById("review-form").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const userName = document.getElementById("user-name").value;
-    const rating = parseInt(document.getElementById("rating").value);
-    const userReview = document.getElementById("user-review").value;
-
-    // ส่งข้อมูลไปยังเซิร์ฟเวอร์เพื่อบันทึกลงในฐานข้อมูล
-    // ตรวจสอบความถูกต้องของข้อมูลก่อนส่ง
-
-    // หลังจากบันทึกเสร็จสิ้น, รีเซ็ตคะแนนดาวและแสดงการรีเซ็ต
-    resetStars();
-    displayReview(userName, rating, userReview);
-
-    // ล้างฟอร์ม
-    // document.getElementById("movie-name").value = "";
-    document.getElementById("user-name").value = "";
-    document.getElementById("rating").value = "0";
-    document.getElementById("user-review").value = "";
-});
-
 // รีเซ็ตคะแนนดาว
 function resetStars() {
     const stars = document.querySelectorAll('.star');
@@ -57,22 +35,22 @@ stars.forEach(star => {
 });
 
 //aum
-fetch('http://localhost:8080/project-os-container/')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        displayReview(data.code, data.status, "kuy savelnwza");
-        data.forEach(review => {
-            displayReview(review.code, review.status, review.message);
-        });
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-    });
+// fetch('http://localhost:8080/project-os-container/')
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         displayReview(data.code, data.status, "kuy savelnwza");
+//         data.forEach(review => {
+//             displayReview(review.code, review.status, review.message);
+//         });
+//     })
+//     .catch(error => {
+//         console.error('There was a problem with the fetch operation:', error);
+//     });
 
 
 // Define the API endpoint URL
@@ -123,9 +101,9 @@ const category_movie = document.getElementById("category")
 async function getImage() {
     try {
         const header = {
-            'Api_Key': '1234567890'
+            'Api-Key': '1234567890'
         }
-        const response = await fetch("http://localhost:8080/project-os-container/movie/1", { method: "GET", headers: header });
+        const response = await fetch("http://localhost:8080/project-os-container/movies/1", { method: "GET", headers: header });
 
         if (response.status === 200) {
             const movieData = await response.json();
@@ -172,16 +150,16 @@ document.getElementById("review-form").addEventListener("submit", function (even
     const userReview = document.getElementById("user-review").value; 
     const data = {
         name: userName,
-        id_movie:'1',
+        id_movie:1,
         comment:userReview,
         score:rating
     };
     try {
         const header = {
-            'Api_Key': '1234567890'
+            'Api-Key': '1234567890'
         }
-        const response = fetch("http://localhost:8080/project-os-container/addReview/1", { method: "POST", headers: header ,body:JSON.stringify(data)});
-        if (response.status === 201) {
+        const response = fetch("http://localhost:8080/project-os-container/reviews/add", { method: "POST", headers: header ,body:JSON.stringify(data)});
+        if (response.ok) {
             console.log("Success")
         } else {
             alert("Error");
