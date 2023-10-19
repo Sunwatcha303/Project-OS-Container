@@ -5,15 +5,6 @@ function resetStars() {
 }
 
 
-// แสดงรีวิวบนหน้าเว็บ
-function displayReview(userName, rating, userReview) {
-    const reviewDiv = document.createElement("div");
-    reviewDiv.className = "review"; // เพิ่มคลาส "review"
-    reviewDiv.innerHTML = `Name ${userName} (${rating} star)</p><p> ${userReview} </p>`;
-    document.getElementById("movie-list").appendChild(reviewDiv);
-}
-
-
 // เพิ่มเหตุการณ์การคลิกสำหรับดาว
 const stars = document.querySelectorAll('.star');
 stars.forEach(star => {
@@ -136,7 +127,7 @@ document.getElementById("review-form").addEventListener("submit", function (even
 
     // หลังจากบันทึกเสร็จสิ้น, รีเซ็ตคะแนนดาวและแสดงการรีเซ็ต
     resetStars();
-    displayReview(userName, rating, userReview);
+    //displayReview(userName, rating, userReview);
 
     // ล้างฟอร์ม
     // document.getElementById("movie-name").value = "";
@@ -144,3 +135,50 @@ document.getElementById("review-form").addEventListener("submit", function (even
     document.getElementById("rating").value = "0";
     document.getElementById("user-review").value = "";
 });
+
+//part3 by dear
+
+async function getReviews(){
+    const name_user = document.getElementById("user-name");
+    const score_user = document.getElementById("user-score")
+    const comment = document.getElementById("comment")
+    const time = document.getElementById("time")
+    try{
+        const header = {
+            'Api-Key': '1234567890'
+        }
+        //get param
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id_movie');
+
+        const response = await fetch("http://localhost:8080/project-os-container/reviews/"+id, { method: "GET", headers: header });
+        if (response.status === 200){
+            const reviewData = await response.json();
+            for(const review of reviewData){
+                // name_user.innerHTML =  reviewData.name
+                // score_user.innerHTML = reviewData.score
+                // comment.innerHTML = reviewData.comment
+                // time.innerHTML = reviewData.create_at
+                const reviewElement = document.createElement('div');
+
+                reviewElement.innerHTML = `
+                    <h3>Name: ${review.name}</h3>
+                    <p>Score: ${review.score}</p>
+                    <p>Comment: ${review.comment}</p>
+                    <p>Time: ${review.create_at}</p>
+                `;
+
+                // แนบข้อมูลรีวิวลงใน DOM
+                name_user.appendChild(reviewElement);
+            };
+
+        }else {
+            alert("Error fetching the reviews.");
+        }
+
+
+    }catch (error) {
+        console.error("Error:", error);
+    }
+}
+getReviews()
