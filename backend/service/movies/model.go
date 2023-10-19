@@ -22,6 +22,12 @@ type MovieResponse struct {
 	ImageMovie string  `json:"image_movie"`
 }
 
+type MovieUpdateRequest struct {
+	MovieName  *string `json:"movie_name"`
+	Category   *string `json:"category"`
+	ImageMovie *string `json:"image_movie"`
+}
+
 type ScoreResponse struct {
 	MovieScore float64 `json:"movie_score"`
 }

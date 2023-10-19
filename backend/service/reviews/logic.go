@@ -37,7 +37,7 @@ func (l *ReviewsLogic) GetAllReviewsbyMovieIdLogic(v_id string) (response *[]Rev
 	return
 }
 
-func (l *ReviewsLogic) AddReviewLogic(request *ReviewRequest) (err error) {
+func (l *ReviewsLogic) AddReviewLogic(request ReviewRequest) (err error) {
 	if request.Name == "" {
 		return templateError.BadrequestError
 	} else if reflect.TypeOf(request.IdMovie) != reflect.TypeOf(int(0)) {
@@ -45,7 +45,25 @@ func (l *ReviewsLogic) AddReviewLogic(request *ReviewRequest) (err error) {
 	} else if reflect.TypeOf(request.Score) != reflect.TypeOf(float64(0)) || (request.Score < 0 || request.Score > 5) {
 		return templateError.BadrequestError
 	}
-	if err = l.ReviewsRepository.AddReview(*request); err != nil {
+	if err = l.ReviewsRepository.AddReview(request); err != nil {
+		return err
+	}
+	return
+}
+
+func (l *ReviewsLogic) UpdateReviewbyIdLogic(v_id string, request ReviewUpdateRequest) (err error) {
+	var id int
+	id, err = strconv.Atoi(v_id)
+	if err != nil {
+		return templateError.BadrequestError
+	}
+	if _, err = l.ReviewsRepository.GetReviewsbyId(id); err != nil {
+		return templateError.ReviewNotFoundError
+	}
+	if request.Name == nil && request.Comment == nil && request.Score == nil {
+		return templateError.BadrequestError
+	}
+	if err = l.ReviewsRepository.UpdateReviewbyId(id, request); err != nil {
 		return err
 	}
 	return

@@ -21,7 +21,7 @@ func NewEndpoint() *Endpoint {
 }
 
 func (e *Endpoint) Health(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found %+v\n", errorResponse)
@@ -38,7 +38,7 @@ func (e *Endpoint) Health(c *gin.Context) {
 }
 
 func (e *Endpoint) GetAllReviews(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
@@ -49,14 +49,14 @@ func (e *Endpoint) GetAllReviews(c *gin.Context) {
 		fmt.Printf("[review] error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 	} else if len(*response) == 0 {
-		c.JSON(http.StatusOK, nil)
+		c.JSON(http.StatusNoContent, nil)
 	} else {
 		c.JSON(http.StatusOK, response)
 	}
 }
 
 func (e *Endpoint) GetAllReviewsbyMovieId(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
@@ -68,21 +68,21 @@ func (e *Endpoint) GetAllReviewsbyMovieId(c *gin.Context) {
 		fmt.Printf("[review] error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 	} else if len(*response) == 0 {
-		c.JSON(http.StatusOK, nil)
+		c.JSON(http.StatusNoContent, nil)
 	} else {
 		c.JSON(http.StatusOK, response)
 	}
 }
 
 func (e *Endpoint) AddReview(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
 	}
-	var requestBody *ReviewRequest
+	var requestBody ReviewRequest
 	if err := c.BindJSON(&requestBody); err != nil {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
 		fmt.Printf("[review] Internal Server error \n%+v\n", errorResponse)
@@ -98,8 +98,32 @@ func (e *Endpoint) AddReview(c *gin.Context) {
 	c.JSON(http.StatusCreated, nil)
 }
 
+func (e *Endpoint) UpdateReviewbyId(c *gin.Context) {
+	api_key := c.GetHeader("Api-Key")
+	if api_key != constants.Api_Key {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
+		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+	}
+	id := c.Param("id")
+	var requestBody ReviewUpdateRequest
+	if err := c.BindJSON(&requestBody); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
+		fmt.Printf("[review] Internal Server error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
+	}
+	if err := e.logic.UpdateReviewbyIdLogic(id, requestBody); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
+		fmt.Printf("[review] error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
+	}
+	c.JSON(http.StatusOK, nil)
+}
+
 func (e *Endpoint) DeleteReviewbyId(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)

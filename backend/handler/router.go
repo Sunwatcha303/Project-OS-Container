@@ -135,6 +135,14 @@ func (r Routes) InitRouter() http.Handler {
 			Validation:  middleware.NoMiddlewareValitdation,
 		},
 		{
+			Name:        "PUT: update review by id",
+			Description: "Update review from server by id",
+			Method:      http.MethodPut,
+			Patten:      "/reviews/update/:id",
+			Endpoint:    reviewEndpoint.UpdateReviewbyId,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		{
 			Name:        "DELETE: delete review by id",
 			Description: "Delete review from server by id",
 			Method:      http.MethodDelete,
@@ -148,7 +156,7 @@ func (r Routes) InitRouter() http.Handler {
 	ro.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders: []string{"Accept", "Api_key"},
+		AllowHeaders: []string{"Accept", "Api-key"},
 	}))
 
 	mainRoute := ro.Group("project-os-container")

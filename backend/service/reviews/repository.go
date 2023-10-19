@@ -74,6 +74,21 @@ func (r *ReviewsRepository) AddReview(request ReviewRequest) (err error) {
 	return
 }
 
+func (r *ReviewsRepository) UpdateReviewbyId(id int, request ReviewUpdateRequest) (err error) {
+	if config.Database.DB == nil {
+		return templateError.DatabaseConnectedError
+	}
+	db := config.Database.DB
+	err = db.Transaction(func(tx *gorm.DB) error {
+		if err = tx.Table("review").Where("id = ?", id).Updates(&request).Error; err != nil {
+			return err
+		} else {
+			return nil
+		}
+	})
+	return
+}
+
 func (r *ReviewsRepository) DeleteReviewById(id int) (err error) {
 	if config.Database.DB == nil {
 		return templateError.DatabaseConnectedError

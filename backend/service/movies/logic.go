@@ -58,6 +58,24 @@ func (l *MovieLogic) AddMovieLogic(request MovieRequest) (err error) {
 	return
 }
 
+func (l *MovieLogic) UpdateMoviebyIdLogic(v_id string, requestUpdate MovieUpdateRequest) (err error) {
+	var id int
+	id, err = strconv.Atoi(v_id)
+	if err != nil {
+		return templateError.BadrequestError
+	}
+	if _, err = l.MovieRepository.GetMovieById(id); err != nil {
+		return templateError.MovieNotFoundError
+	}
+	if requestUpdate.MovieName == nil && requestUpdate.Category == nil && requestUpdate.ImageMovie == nil {
+		return templateError.BadrequestError
+	}
+	if err = l.MovieRepository.UpdateMoviebyId(id, requestUpdate); err != nil {
+		return err
+	}
+	return
+}
+
 func (l *MovieLogic) DeleteMoviebyIdLogic(v_id string) (err error) {
 	var id int
 	id, err = strconv.Atoi(v_id)

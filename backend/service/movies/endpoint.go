@@ -21,7 +21,7 @@ func NewEndpoint() *Endpoint {
 }
 
 func (e *Endpoint) Health(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found %+v\n", errorResponse)
@@ -38,7 +38,7 @@ func (e *Endpoint) Health(c *gin.Context) {
 }
 
 func (e *Endpoint) GetAllMovie(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
@@ -49,14 +49,14 @@ func (e *Endpoint) GetAllMovie(c *gin.Context) {
 		fmt.Printf("[movie] error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 	} else if len(*response) == 0 {
-		c.JSON(http.StatusNotFound, nil)
+		c.JSON(http.StatusNoContent, nil)
 	} else {
 		c.JSON(http.StatusOK, response)
 	}
 }
 
 func (e *Endpoint) GetMovieById(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
@@ -73,7 +73,7 @@ func (e *Endpoint) GetMovieById(c *gin.Context) {
 }
 
 func (e *Endpoint) GetScoreBymovieid(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
@@ -90,7 +90,7 @@ func (e *Endpoint) GetScoreBymovieid(c *gin.Context) {
 }
 
 func (e *Endpoint) AddMovie(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
@@ -114,17 +114,32 @@ func (e *Endpoint) AddMovie(c *gin.Context) {
 }
 
 func (e *Endpoint) UpdateMoviebyId(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
 	}
+	id := c.Param("movie_id")
+	var requestBody MovieUpdateRequest
+	if err := c.BindJSON(&requestBody); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
+		fmt.Printf("[movie] Internal Server error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
+	}
+	if err := e.logic.UpdateMoviebyIdLogic(id, requestBody); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
+		fmt.Printf("[movie] error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
+	}
+	c.JSON(http.StatusOK, nil)
 }
 
 func (e *Endpoint) DeleteMoviebyId(c *gin.Context) {
-	api_key := c.GetHeader("Api_Key")
+	api_key := c.GetHeader("Api-Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)

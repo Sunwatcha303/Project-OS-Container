@@ -16,6 +16,12 @@ type ReviewRequest struct {
 	Score   float64 `json:"score"`
 }
 
+type ReviewUpdateRequest struct {
+	Name    *string  `json:"name"`
+	Comment *string  `json:"comment"`
+	Score   *float64 `json:"score"`
+}
+
 type ReviewResponse struct {
 	Id       int       `json:"id"`
 	Name     string    `json:"name"`

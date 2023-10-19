@@ -70,6 +70,21 @@ func (r *MovieRepository) AddMovie(request MovieRequest) (err error) {
 	return
 }
 
+func (r *MovieRepository) UpdateMoviebyId(id int, request MovieUpdateRequest) (err error) {
+	if config.Database.DB == nil {
+		return templateError.DatabaseConnectedError
+	}
+	db := config.Database.DB
+	err = db.Transaction(func(tx *gorm.DB) error {
+		if err = tx.Table("movie").Where("id_movie = ?", id).Updates(&request).Error; err != nil {
+			return err
+		} else {
+			return nil
+		}
+	})
+	return
+}
+
 func (r *MovieRepository) DeleteMoviebyId(id int) (err error) {
 	if config.Database.DB == nil {
 		return templateError.DatabaseConnectedError
