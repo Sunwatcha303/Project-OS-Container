@@ -106,7 +106,7 @@ func (r Routes) InitRouter() http.Handler {
 			Name:        "Get: health",
 			Description: "Get health status from server",
 			Method:      http.MethodGet,
-			Patten:      "/review/",
+			Patten:      "/reviews/",
 			Endpoint:    reviewEndpoint.Health,
 			Validation:  middleware.NoMiddlewareValitdation,
 		},
@@ -116,6 +116,30 @@ func (r Routes) InitRouter() http.Handler {
 			Method:      http.MethodGet,
 			Patten:      "/reviews/all",
 			Endpoint:    reviewEndpoint.GetAllReviews,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		{
+			Name:        "GET: get all reviews by movie id",
+			Description: "Get all review from server by movie id",
+			Method:      http.MethodGet,
+			Patten:      "/reviews/:movie_id",
+			Endpoint:    reviewEndpoint.GetAllReviewsbyMovieId,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		{
+			Name:        "POST: add review",
+			Description: "Add review into server",
+			Method:      http.MethodPost,
+			Patten:      "/reviews/add",
+			Endpoint:    reviewEndpoint.AddReview,
+			Validation:  middleware.NoMiddlewareValitdation,
+		},
+		{
+			Name:        "DELETE: delete review by id",
+			Description: "Delete review from server by id",
+			Method:      http.MethodDelete,
+			Patten:      "/reviews/delete/:id",
+			Endpoint:    reviewEndpoint.DeleteReviewbyId,
 			Validation:  middleware.NoMiddlewareValitdation,
 		},
 	}
@@ -132,6 +156,9 @@ func (r Routes) InitRouter() http.Handler {
 		mainRoute.Handle(e.Method, e.Patten, e.Validation, e.Endpoint)
 	}
 	for _, e := range r.movieService {
+		mainRoute.Handle(e.Method, e.Patten, e.Validation, e.Endpoint)
+	}
+	for _, e := range r.reviewService {
 		mainRoute.Handle(e.Method, e.Patten, e.Validation, e.Endpoint)
 	}
 	return ro

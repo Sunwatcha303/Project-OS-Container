@@ -105,6 +105,7 @@ var (
 	DatabaseConnectedError TemplateError = New("database_connected_error")
 	BadrequestError        TemplateError = New("Bad_request_Error")
 	MovieNotFoundError     TemplateError = New("movie_not_found_error")
+	ReviewNotFoundError    TemplateError = New("review_not_found_error")
 )
 
 var HttpStatusCodes = map[error]int{
@@ -113,6 +114,7 @@ var HttpStatusCodes = map[error]int{
 	DatabaseConnectedError: 500,
 	BadrequestError:        400,
 	MovieNotFoundError:     404,
+	ReviewNotFoundError:    404,
 }
 
 var CodesError = map[error]string{
@@ -121,6 +123,7 @@ var CodesError = map[error]string{
 	DatabaseConnectedError: "1002",
 	BadrequestError:        "1004",
 	MovieNotFoundError:     "1005",
+	ReviewNotFoundError:    "1006",
 }
 
 var ThaiDescription = map[error]string{
@@ -129,6 +132,7 @@ var ThaiDescription = map[error]string{
 	DatabaseConnectedError: "ไม่สามารถเชื่อมต่อฐานข้อมูลได้",
 	BadrequestError:        "คำขอไม่ถูกต้อง",
 	MovieNotFoundError:     "ไม่พบข้อมูลภาพยนตร์",
+	ReviewNotFoundError:    "ไม่พบข้อมูลการรีวิว",
 }
 
 var EnglishDescription = map[error]string{
@@ -136,7 +140,8 @@ var EnglishDescription = map[error]string{
 	ApiKeyError:            "Invalid credentials",
 	DatabaseConnectedError: "Unable to connect to database",
 	BadrequestError:        "Invalid request",
-	MovieNotFoundError:     "Movie Not found",
+	MovieNotFoundError:     "Movie not found",
+	ReviewNotFoundError:    "Review not found",
 }
 
 func GetErrorResponse(err error) (int, HttpErrorResponse) {

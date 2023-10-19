@@ -25,7 +25,8 @@ func (l *MovieLogic) GetAllMovieLogic() (response *[]MovieResponse, err error) {
 }
 
 func (l *MovieLogic) GetMovieByIdLogic(v_id string) (response *MovieResponse, err error) {
-	id, err := strconv.Atoi(v_id)
+	var id int
+	id, err = strconv.Atoi(v_id)
 	if err != nil {
 		return nil, templateError.BadrequestError
 	}
@@ -36,7 +37,8 @@ func (l *MovieLogic) GetMovieByIdLogic(v_id string) (response *MovieResponse, er
 }
 
 func (l *MovieLogic) GetScoreBymovieidLogic(v_id string) (response *ScoreResponse, err error) {
-	id, err := strconv.Atoi(v_id)
+	var id int
+	id, err = strconv.Atoi(v_id)
 	if err != nil {
 		return nil, templateError.BadrequestError
 	}

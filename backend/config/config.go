@@ -16,7 +16,7 @@ type DB struct {
 var Database DB
 
 func InitDatabaseConnection() {
-	var ConnectionMasterDB string = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&",
+	var ConnectionMasterDB string = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true",
 		constants.Database_user,
 		constants.Database_password,
 		constants.Database_host_for_test,

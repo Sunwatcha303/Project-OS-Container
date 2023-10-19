@@ -49,7 +49,7 @@ func (e *Endpoint) GetAllMovie(c *gin.Context) {
 		fmt.Printf("[movie] error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 	} else if len(*response) == 0 {
-		c.JSON(http.StatusOK, nil)
+		c.JSON(http.StatusNotFound, nil)
 	} else {
 		c.JSON(http.StatusOK, response)
 	}
@@ -137,5 +137,5 @@ func (e *Endpoint) DeleteMoviebyId(c *gin.Context) {
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
 	}
-	c.JSON(http.StatusCreated, nil)
+	c.JSON(http.StatusOK, nil)
 }

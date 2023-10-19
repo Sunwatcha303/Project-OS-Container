@@ -55,25 +55,62 @@ func (e *Endpoint) GetAllReviews(c *gin.Context) {
 	}
 }
 
+func (e *Endpoint) GetAllReviewsbyMovieId(c *gin.Context) {
+	api_key := c.GetHeader("Api_Key")
+	if api_key != constants.Api_Key {
+		httpStusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
+		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStusCode, errorResponse)
+	}
+	id := c.Param("movie_id")
+	if response, err := e.logic.GetAllReviewsbyMovieIdLogic(id); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
+		fmt.Printf("[review] error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+	} else if len(*response) == 0 {
+		c.JSON(http.StatusOK, nil)
+	} else {
+		c.JSON(http.StatusOK, response)
+	}
+}
+
 func (e *Endpoint) AddReview(c *gin.Context) {
 	api_key := c.GetHeader("Api_Key")
 	if api_key != constants.Api_Key {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
-		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
+		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
 	}
-	var requestBody ReviewRequest
+	var requestBody *ReviewRequest
 	if err := c.BindJSON(&requestBody); err != nil {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
-		fmt.Printf("[movie] Internal Server error \n%+v\n", errorResponse)
+		fmt.Printf("[review] Internal Server error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
 	}
-	// if err := /* */; err != nil {
-	// 	httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
-	// 	fmt.Printf("[movie] error \n%+v\n", errorResponse)
-	// 	c.AbortWithStatusJSON(httpStatusCode, errorResponse)
-	// 	return
-	// }
+	if err := e.logic.AddReviewLogic(requestBody); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
+		fmt.Printf("[review] error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
+	}
+	c.JSON(http.StatusCreated, nil)
+}
+
+func (e *Endpoint) DeleteReviewbyId(c *gin.Context) {
+	api_key := c.GetHeader("Api_Key")
+	if api_key != constants.Api_Key {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
+		fmt.Printf("[review] api key not found \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+	}
+	id := c.Param("id")
+	if err := e.logic.DeleteMoviebyIdLogic(id); err != nil {
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
+		fmt.Printf("[review] error \n%+v\n", errorResponse)
+		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
+	}
+	c.JSON(http.StatusOK, nil)
 }
