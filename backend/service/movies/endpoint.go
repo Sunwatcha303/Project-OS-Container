@@ -43,6 +43,7 @@ func (e *Endpoint) GetAllMovie(c *gin.Context) {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
 	}
 	if response, err := e.logic.GetAllMovieLogic(); err != nil {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
@@ -61,6 +62,7 @@ func (e *Endpoint) GetMovieById(c *gin.Context) {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
 	}
 	id := c.Param("movie_id")
 	if response, err := e.logic.GetMovieByIdLogic(id); err != nil {
@@ -78,6 +80,7 @@ func (e *Endpoint) GetScoreBymovieid(c *gin.Context) {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
 	}
 	id := c.Param("movie_id")
 	if response, err := e.logic.GetScoreBymovieidLogic(id); err != nil {
@@ -144,6 +147,7 @@ func (e *Endpoint) DeleteMoviebyId(c *gin.Context) {
 		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.ApiKeyError)
 		fmt.Printf("[movie] api key not found \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
+		return
 	}
 	id := c.Param("movie_id")
 	if err := e.logic.DeleteMoviebyIdLogic(id); err != nil {
