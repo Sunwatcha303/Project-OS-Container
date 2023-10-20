@@ -26,37 +26,39 @@ stars.forEach(star => {
 });
 
 //part1 by sun
-
+//ใส่รูป-ชื่อ-คะแนนเฉลี่ย-หมวดหมู่ ของหนัง
 async function getImage() {
     const image = document.getElementById("movie-image");
     const name_movie = document.getElementById("movie-name")
     const score_movie = document.getElementById("average")
     const category_movie = document.getElementById("category")
-    //get param
+    //get param ดึงค่า parameter ชื่อ 'id_movie' จาก URL ของหน้าเว็บปัจจุบัน
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id_movie');
     try {
+        //ส่งคำขอ GET (การดึงข้อมูล) ไปยัง URL 
         const header = {
             'Api-Key': '1234567890'
         }
         const response = await fetch("http://localhost:8080/project-os-container/movies/" + id, { method: "GET", headers: header });
 
         if (response.status === 200) {
+            //แปลงข้อมูลที่ได้รับจาก response เป็น JSON format โดยใช้ await เพื่อรอให้การแปลงเสร็จสิ้น ซึ่งเป็นการใช้งาน asynchronous.
             const movieData = await response.json();
 
+            //รับข้อมูลบิตแปลงข้อมูลบิตเป็นรูปภาพ
             const base64String = movieData.image_movie;
             const binaryString = atob(base64String);
             const uint8Array = new Uint8Array(binaryString.length);
             for (let i = 0; i < binaryString.length; i++) {
                 uint8Array[i] = binaryString.charCodeAt(i);
             }
-
             const blob = new Blob([uint8Array], { type: "image/jpeg" });
             const urlCreator = window.URL || window.webkitURL;
-
             image.src = urlCreator.createObjectURL(blob);
             image.style.height = 300;
 
+            //ชื่อ-คะแนนเฉลี่ย-หมวดหมู่
             name_movie.innerHTML = movieData.movie_name
             score_movie.innerHTML = movieData.movie_score
             category_movie.innerHTML = movieData.category
@@ -97,6 +99,7 @@ document.getElementById("review-form").addEventListener("submit",async function 
         const response = await fetch("http://localhost:8080/project-os-container/reviews/add", { method: "POST", headers: header, body: JSON.stringify(data) });
         console.log(response.ok)
         if (response.status === 201) {
+            displayReview(userName, rating, userReview,"now")
             console.log("Success")
         } else {
             alert("Error");
@@ -114,12 +117,13 @@ document.getElementById("review-form").addEventListener("submit",async function 
     document.getElementById("user-name").value = "";
     document.getElementById("rating").value = "0";
     document.getElementById("user-review").value = "";
-   //เรียกรีวิวใหม่ 
-    getReviews();
+
+    // location.reload();
 });
 
 //part 3 by aum and dear
 async function getReviews(){ 
+    //get param
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id_movie');        
     const header = {
@@ -133,6 +137,7 @@ async function getReviews(){
             return response.json();
         })
         .then(data => {
+            //ส่งข้อมูลทั้งหมดไปเข้าฟังก์ชัน displayReview
             data.forEach(review => {
                 displayReview(review.name, review.score, review.comment, review.create_at);
             });
@@ -143,10 +148,22 @@ async function getReviews(){
 }
 getReviews();
 
-function displayReview(userName, rating, userReview,Time) {
+function displayReview(userName, rating, userReview, Time) {
+    const now = new Date();
+    const reviewTime = new Date(Time);
+    const timeDifference = now - reviewTime;
+
+    let formattedDateTime;
+
+    if (timeDifference <= 86400000) { // 1 วันมี 86400000 มิลลิวินาที
+        formattedDateTime = reviewTime.toLocaleTimeString('en-US', { timeStyle: 'short' });
+    } else {
+        formattedDateTime = reviewTime.toLocaleDateString('en-US', { dateStyle: 'long' });
+    }
+
     const reviewDiv = document.createElement("div");
     reviewDiv.className = "review"; // เพิ่มคลาส "review"
-    reviewDiv.innerHTML = `Name ${userName} (${rating} star): <small style="color: #888">${Time}</small> </p> <p> ${userReview} </p> `;
+    reviewDiv.innerHTML = `Name ${userName} (${rating} star) : <small style="color: #888">${formattedDateTime}</small> </p> <p> ${userReview} </p> `;
 
     document.getElementById("movie-list").appendChild(reviewDiv);
 }
