@@ -25,26 +25,6 @@ stars.forEach(star => {
     });
 });
 
-
-//aum
-// fetch('http://localhost:8080/project-os-container/')
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         displayReview(data.code, data.status, "kuy savelnwza");
-//         data.forEach(review => {
-//             displayReview(review.code, review.status, review.message);
-//         });
-//     })
-//     .catch(error => {
-//         console.error('There was a problem with the fetch operation:', error);
-//     });
-
-
 //part1 by sun
 
 async function getImage() {
@@ -52,7 +32,6 @@ async function getImage() {
     const name_movie = document.getElementById("movie-name")
     const score_movie = document.getElementById("average")
     const category_movie = document.getElementById("category")
-
     //get param
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id_movie');
@@ -92,7 +71,7 @@ getImage();
 
 
 //part2 by ManW
-document.getElementById("review-form").addEventListener("submit", function (event) {
+document.getElementById("review-form").addEventListener("submit",async function (event) {
     event.preventDefault();
 
     // ส่งข้อมูลไปยังเซิร์ฟเวอร์เพื่อบันทึกลงในฐานข้อมูล
@@ -115,7 +94,8 @@ document.getElementById("review-form").addEventListener("submit", function (even
         const header = {
             'Api-Key': '1234567890'
         }
-        const response = fetch("http://localhost:8080/project-os-container/reviews/add", { method: "POST", headers: header, body: JSON.stringify(data) });
+        const response = await fetch("http://localhost:8080/project-os-container/reviews/add", { method: "POST", headers: header, body: JSON.stringify(data) });
+        console.log(response.ok)
         if (response.status === 201) {
             console.log("Success")
         } else {
@@ -134,51 +114,39 @@ document.getElementById("review-form").addEventListener("submit", function (even
     document.getElementById("user-name").value = "";
     document.getElementById("rating").value = "0";
     document.getElementById("user-review").value = "";
+   //เรียกรีวิวใหม่ 
+    getReviews();
 });
 
-//part3 by dear
-
-async function getReviews(){
-    const name_user = document.getElementById("user-name");
-    const score_user = document.getElementById("user-score")
-    const comment = document.getElementById("comment")
-    const time = document.getElementById("time")
-    try{
-        const header = {
-            'Api-Key': '1234567890'
-        }
-        //get param
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id_movie');
-
-        const response = await fetch("http://localhost:8080/project-os-container/reviews/"+id, { method: "GET", headers: header });
-        if (response.status === 200){
-            const reviewData = await response.json();
-            for(const review of reviewData){
-                // name_user.innerHTML =  reviewData.name
-                // score_user.innerHTML = reviewData.score
-                // comment.innerHTML = reviewData.comment
-                // time.innerHTML = reviewData.create_at
-                const reviewElement = document.createElement('div');
-
-                reviewElement.innerHTML = `
-                    <h3>Name: ${review.name}</h3>
-                    <p>Score: ${review.score}</p>
-                    <p>Comment: ${review.comment}</p>
-                    <p>Time: ${review.create_at}</p>
-                `;
-
-                // แนบข้อมูลรีวิวลงใน DOM
-                name_user.appendChild(reviewElement);
-            };
-
-        }else {
-            alert("Error fetching the reviews.");
-        }
-
-
-    }catch (error) {
-        console.error("Error:", error);
+//part 3 by aum and dear
+async function getReviews(){ 
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id_movie');        
+    const header = {
+        'Api-Key': '1234567890'
     }
+    fetch("http://localhost:8080/project-os-container/reviews/"+id, { method: "GET", headers: header })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(review => {
+                displayReview(review.name, review.score, review.comment, review.create_at);
+            });
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
 }
-getReviews()
+getReviews();
+
+function displayReview(userName, rating, userReview,Time) {
+    const reviewDiv = document.createElement("div");
+    reviewDiv.className = "review"; // เพิ่มคลาส "review"
+    reviewDiv.innerHTML = `Name ${userName} (${rating} star): <small style="color: #888">${Time}</small> </p> <p> ${userReview} </p> `;
+
+    document.getElementById("movie-list").appendChild(reviewDiv);
+}
