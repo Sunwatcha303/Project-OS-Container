@@ -69,6 +69,8 @@ func (l *MovieLogic) UpdateMoviebyIdLogic(v_id string, requestUpdate MovieUpdate
 	}
 	if requestUpdate.MovieName == nil && requestUpdate.Category == nil && requestUpdate.ImageMovie == nil {
 		return templateError.BadrequestError
+	} else if *requestUpdate.MovieName == "" || *requestUpdate.Category == "" || *requestUpdate.ImageMovie == "" {
+		return templateError.BadrequestError
 	}
 	if err = l.MovieRepository.UpdateMoviebyId(id, requestUpdate); err != nil {
 		return err

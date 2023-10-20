@@ -63,6 +63,8 @@ func (l *ReviewsLogic) UpdateReviewbyIdLogic(v_id string, request ReviewUpdateRe
 	}
 	if request.Name == nil && request.Comment == nil && request.Score == nil {
 		return templateError.BadrequestError
+	} else if *request.Name == "" || *request.Comment == "" {
+		return templateError.BadrequestError
 	} else if *request.Score < 0 || *request.Score > 5 {
 		return templateError.BadrequestError
 	}

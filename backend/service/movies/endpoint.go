@@ -108,7 +108,7 @@ func (e *Endpoint) AddMovie(c *gin.Context) {
 		return
 	}
 	if err := e.logic.AddMovieLogic(requestBody); err != nil {
-		httpStatusCode, errorResponse := templateError.GetErrorResponse(templateError.InternalServerError)
+		httpStatusCode, errorResponse := templateError.GetErrorResponse(err)
 		fmt.Printf("[movie] error \n%+v\n", errorResponse)
 		c.AbortWithStatusJSON(httpStatusCode, errorResponse)
 		return
