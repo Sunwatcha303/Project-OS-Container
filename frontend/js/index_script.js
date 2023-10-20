@@ -15,7 +15,7 @@ async function getListMovies() {
                 const imageMovie = document.createElement("img");
 
                 //link to review
-                reviewHref.href = "/frontend/review.html?id_movie=" + movie.id_movie;
+                reviewHref.href = "/../review.html?id_movie=" + movie.id_movie;
 
                 imageMovie.id = "movie-image";
                 imageMovie.alt = "Image";
