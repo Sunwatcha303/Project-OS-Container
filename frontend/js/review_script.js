@@ -1,3 +1,14 @@
+// JavaScript to add padding to the content when the header becomes fixed
+const header = document.querySelector('header');
+const content = document.querySelector('main');
+
+content.style.paddingTop = header.clientHeight + 'px';
+
+// Update padding on window resize
+window.addEventListener('resize', () => {
+    content.style.paddingTop = header.clientHeight + 'px';
+});
+
 // รีเซ็ตคะแนนดาว
 function resetStars() {
     const stars = document.querySelectorAll('.star');
@@ -27,7 +38,7 @@ stars.forEach(star => {
 
 //part1 by sun
 //ใส่รูป-ชื่อ-คะแนนเฉลี่ย-หมวดหมู่ ของหนัง
-async function getImage() {
+async function getMovie() {
     const image = document.getElementById("movie-image");
     const name_movie = document.getElementById("movie-name")
     const score_movie = document.getElementById("average")
@@ -56,12 +67,12 @@ async function getImage() {
             const blob = new Blob([uint8Array], { type: "image/jpeg" });
             const urlCreator = window.URL || window.webkitURL;
             image.src = urlCreator.createObjectURL(blob);
-            image.style.height = 300;
+
 
             //ชื่อ-คะแนนเฉลี่ย-หมวดหมู่
             name_movie.innerHTML = movieData.movie_name
             score_movie.innerHTML = movieData.movie_score
-            category_movie.innerHTML = movieData.category
+            category_movie.innerHTML += movieData.category
         } else {
             alert("Error fetching the image.");
         }
@@ -69,11 +80,11 @@ async function getImage() {
         console.error("Error:", error);
     }
 }
-getImage();
+getMovie();
 
 
 //part2 by ManW
-document.getElementById("review-form").addEventListener("submit",async function (event) {
+document.getElementById("review-form").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     // ส่งข้อมูลไปยังเซิร์ฟเวอร์เพื่อบันทึกลงในฐานข้อมูล
@@ -97,10 +108,11 @@ document.getElementById("review-form").addEventListener("submit",async function 
             'Api-Key': '1234567890'
         }
         const response = await fetch("http://localhost:8080/project-os-container/reviews/add", { method: "POST", headers: header, body: JSON.stringify(data) });
-        console.log(response.ok)
         if (response.status === 201) {
-            displayReview(userName, rating, userReview,"now")
-            console.log("Success")
+            if (document.getElementById("movie-list").innerHTML == "No Comment Review") {
+                document.getElementById("movie-list").innerHTML = ""
+            }
+            displayReview(userName, rating, userReview, new Date())
         } else {
             alert("Error");
         }
@@ -122,15 +134,18 @@ document.getElementById("review-form").addEventListener("submit",async function 
 });
 
 //part 3 by aum and dear
-async function getReviews(){ 
+async function getReviews() {
     //get param
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id_movie');        
+    const id = urlParams.get('id_movie');
     const header = {
         'Api-Key': '1234567890'
     }
-    fetch("http://localhost:8080/project-os-container/reviews/"+id, { method: "GET", headers: header })
+    fetch("http://localhost:8080/project-os-container/reviews/" + id, { method: "GET", headers: header })
         .then(response => {
+            if (response.status === 204) {
+                return;
+            }
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -138,6 +153,10 @@ async function getReviews(){
         })
         .then(data => {
             //ส่งข้อมูลทั้งหมดไปเข้าฟังก์ชัน displayReview
+            if (data == null) {
+                document.getElementById("movie-list").innerHTML = "No Comment Review"
+                return;
+            }
             data.forEach(review => {
                 displayReview(review.name, review.score, review.comment, review.create_at);
             });
@@ -155,7 +174,9 @@ function displayReview(userName, rating, userReview, Time) {
 
     let formattedDateTime;
 
-    if (timeDifference <= 86400000) { // 1 วันมี 86400000 มิลลิวินาที
+    if (timeDifference <= 30000) { // 30 second
+        formattedDateTime = "now";
+    } else if (timeDifference <= 86400000) {// 1 วันมี 86400000 มิลลิวินาที
         formattedDateTime = reviewTime.toLocaleTimeString('en-US', { timeStyle: 'short' });
     } else {
         formattedDateTime = reviewTime.toLocaleDateString('en-US', { dateStyle: 'long' });
@@ -167,3 +188,4 @@ function displayReview(userName, rating, userReview, Time) {
 
     document.getElementById("movie-list").appendChild(reviewDiv);
 }
+
