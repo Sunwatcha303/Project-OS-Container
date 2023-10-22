@@ -37,9 +37,10 @@ async function getListMovies() {
                 //append to tage
                 reviewHref.appendChild(imageMovie);
 
+                movieDiv.className = "movies-box"
                 movieDiv.appendChild(reviewHref);
                 movieDiv.appendChild(childMovieDiv);
-                document.getElementById("movies-list").appendChild(movieDiv);
+                document.getElementById("movies-list-recommend").appendChild(movieDiv);
             }
 
         } else {
@@ -50,3 +51,14 @@ async function getListMovies() {
     }
 }
 getListMovies();
+
+// JavaScript to add padding to the content when the header becomes fixed
+const header = document.querySelector('header');
+const content = document.querySelector('main');
+
+content.style.paddingTop = header.clientHeight + 'px';
+
+// Update padding on window resize
+window.addEventListener('resize', () => {
+    content.style.paddingTop = header.clientHeight + 'px';
+});

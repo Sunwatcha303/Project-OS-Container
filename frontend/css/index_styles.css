@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+body {
+    font-family: 'Kanit', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #000000;
+    opacity: 80%;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+nav ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    height: 50px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+}
+
+h1 {
+    color: #333;
+    font-size: 36px;
+    margin: 20px;
+}
+
+#movies-list-recommend {
+    display: flex;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+#movies-list-container {
+    padding: 10px;
+}
+
+.movies-box {
+    padding: 10px;
+    margin-right: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.movies-box:hover {
+    transform: scale(1.05);
+}
+
+::-webkit-scrollbar-thumb {
+    display: none;
+}
