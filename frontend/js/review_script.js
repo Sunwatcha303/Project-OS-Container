@@ -113,6 +113,7 @@ document.getElementById("review-form").addEventListener("submit", async function
                 document.getElementById("movie-list").innerHTML = ""
             }
             displayReview(userName, rating, userReview, new Date())
+
         } else {
             alert("Error");
         }
@@ -187,5 +188,23 @@ function displayReview(userName, rating, userReview, Time) {
     reviewDiv.innerHTML = `Name ${userName} (${rating} star) : <small style="color: #888">${formattedDateTime}</small> </p> <p> ${userReview} </p> `;
 
     document.getElementById("movie-list").appendChild(reviewDiv);
+    getScoreMovie()
 }
 
+async function getScoreMovie(){
+    const score_movie = document.getElementById("average")
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id_movie');
+    try{
+        const header = {
+            'Api-Key': '1234567890'
+        }
+        const response = await fetch("http://localhost:8080/project-os-container/movies/score/" + id, {method: "GET",headers: header})
+        if (response.status === 200){
+            movieData = await response.json()
+            score_movie.innerHTML = movieData.movie_score
+        }
+    }catch(error){
+        console.error("Error:", error);
+    }
+}
