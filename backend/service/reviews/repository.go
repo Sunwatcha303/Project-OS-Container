@@ -20,7 +20,7 @@ func (r *ReviewsRepository) GetAllReviews() (response *[]ReviewResponse, err err
 		return nil, templateError.DatabaseConnectedError
 	}
 	db := config.Database.DB
-	if err = db.Table("review").Select("*").Find(&response).Order(clause.OrderByColumn{Column: clause.Column{Name: "time"}, Desc: true}).Error; err != nil {
+	if err = db.Table("review").Select("*").Order(clause.OrderByColumn{Column: clause.Column{Name: "create_at"}, Desc: true}).Find(&response).Error; err != nil {
 		return nil, err
 	}
 	return
@@ -31,7 +31,7 @@ func (r *ReviewsRepository) GetAllReviewsbyMovieId(id int) (response *[]ReviewRe
 		return nil, templateError.DatabaseConnectedError
 	}
 	db := config.Database.DB
-	if err = db.Table("review").Select("*").Where("id_movie = ?", id).Find(&response).Order(clause.OrderByColumn{Column: clause.Column{Name: "time"}, Desc: true}).Error; err != nil {
+	if err = db.Table("review").Select("*").Where("id_movie = ?", id).Order(clause.OrderByColumn{Column: clause.Column{Name: "create_at"}, Desc: true}).Find(&response).Error; err != nil {
 		return nil, err
 	}
 	return
