@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	gin.SetMode(gin.DebugMode) // on production use gin.ReleaseMode
+	gin.SetMode(gin.ReleaseMode) // on production use gin.ReleaseMode
 	config.InitDatabaseConnection()
 	r := handler.Routes{}
 	handlerRoute := r.InitRouter()
